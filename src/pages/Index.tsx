@@ -109,6 +109,19 @@ const Index = () => {
     }
   ];
 
+  const productInfo = {
+    title: "SHAKE OFF Phyto Fiber",
+    description: "Un excellent Désintoxiquant naturel",
+    details: [
+      "Dans la phytothérapie, le concept de rajeunissement et de désintoxication est tout aussi important que l'alimentation équilibrée.",
+      "Cette boisson nutritionnelle est composée d'ingrédients naturels qui nettoient et évacuent les déchets et toxines du colon.",
+      "Après la consommation, vous serez surpris de constater les déchets accumulés et ressentirez une sensation incroyablement confortable."
+    ],
+    packaging: "Boîte de 12 sachets de 20g",
+    warning: "Bien que la plupart des gens soient conscients de l'importance de la nutrition, peu se focalisent sur la désintoxication de l'intestin et du colon.",
+    effect: "Lorsque le système digestif n'est pas nettoyé, il perd sa capacité à absorber les éléments nutritifs. Des déchets résiduels restent très souvent dans les intestins, même avec des selles régulières."
+  };
+
   return (
     <div className="min-h-screen">
       {/* Hero Banner Section */}
@@ -152,6 +165,77 @@ const Index = () => {
               />
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* New Product Information Section */}
+      <section className="py-16 bg-gradient-to-b from-white to-green-50">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+          >
+            <div className="relative">
+              <motion.img
+                src="/lovable-uploads/647cfe48-3107-4bc8-80b1-c478f0cc4cb9.png"
+                alt="Shake Off Phyto Fiber Packaging"
+                className="w-full max-w-lg mx-auto rounded-lg shadow-xl"
+                initial={{ scale: 0.95 }}
+                whileInView={{ scale: 1 }}
+                transition={{ duration: 0.5 }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-green-500/10 to-transparent rounded-lg" />
+            </div>
+
+            <div className="space-y-6">
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <h2 className="text-3xl md:text-4xl font-bold text-green-800 mb-4">
+                  {productInfo.title}
+                </h2>
+                <p className="text-xl text-green-600 mb-6">
+                  {productInfo.description}
+                </p>
+                <div className="space-y-4">
+                  {productInfo.details.map((detail, index) => (
+                    <motion.p
+                      key={index}
+                      className="text-gray-700"
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      {detail}
+                    </motion.p>
+                  ))}
+                </div>
+
+                <div className="mt-8 p-4 bg-green-50 rounded-lg border border-green-100">
+                  <p className="text-green-800 font-medium">
+                    Conditionnement: {productInfo.packaging}
+                  </p>
+                </div>
+
+                <div className="mt-8">
+                  <Card className="bg-amber-50/50 border-amber-100">
+                    <CardContent className="pt-6">
+                      <p className="text-amber-800">
+                        ⚠️ {productInfo.warning}
+                      </p>
+                      <p className="mt-4 text-gray-700">
+                        {productInfo.effect}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
