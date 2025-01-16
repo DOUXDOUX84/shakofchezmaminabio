@@ -125,7 +125,6 @@ const productInfo = {
 const Index = () => {
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
-  const [useAlternativeImages, setUseAlternativeImages] = useState(false);
 
   const handleImageClick = (imageSrc: string) => {
     if (zoomedImage === imageSrc) {
@@ -135,26 +134,8 @@ const Index = () => {
     }
   };
 
-  const toggleImages = () => {
-    setUseAlternativeImages(!useAlternativeImages);
-  };
-
-  const getCurrentImages = () => ({
-    hero: useAlternativeImages ? siteImages.alternativeHero : siteImages.productHero,
-    packaging: useAlternativeImages ? siteImages.alternativePackaging : siteImages.productPackaging,
-  });
-
-  const currentImages = getCurrentImages();
-
   return (
     <div className="min-h-screen">
-      <Button
-        onClick={toggleImages}
-        className="fixed top-4 right-4 z-50 bg-green-600 hover:bg-green-700 text-white"
-      >
-        Changer les images
-      </Button>
-
       {/* Hero Banner Section */}
       <section className="relative h-[90vh] flex items-center justify-center bg-gradient-to-b from-green-50 via-white to-yellow-50 overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -183,15 +164,15 @@ const Index = () => {
               </Button>
             </motion.div>
             <motion.img 
-              src={currentImages.hero}
+              src={siteImages.productHero}
               alt="Shake Off Phyto Fiber Présentation"
               className={`w-full max-w-xl mx-auto rounded-lg shadow-2xl cursor-pointer transition-transform duration-300 ${
-                zoomedImage === currentImages.hero ? "scale-150" : ""
+                zoomedImage === siteImages.productHero ? "scale-150" : ""
               }`}
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5 }}
-              onClick={() => handleImageClick(currentImages.hero)}
+              onClick={() => handleImageClick(siteImages.productHero)}
             />
           </div>
         </div>
@@ -208,12 +189,12 @@ const Index = () => {
           >
             <div className="relative">
               <motion.img
-                src={currentImages.packaging}
+                src={siteImages.productPackaging}
                 alt="Shake Off Phyto Fiber Packaging"
                 className={`w-full max-w-lg mx-auto rounded-lg shadow-xl cursor-pointer transition-transform duration-300 ${
-                  zoomedImage === currentImages.packaging ? "scale-150" : ""
+                  zoomedImage === siteImages.productPackaging ? "scale-150" : ""
                 }`}
-                onClick={() => handleImageClick(currentImages.packaging)}
+                onClick={() => handleImageClick(siteImages.productPackaging)}
               />
             </div>
 
