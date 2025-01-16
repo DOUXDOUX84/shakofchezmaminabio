@@ -5,7 +5,6 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
-const Index = () => {
   const benefits = [
     "Pas d'effets secondaires car c'est une combinaison de nutriments actifs",
     "Rapide, efficace, au goût agréable",
@@ -122,6 +121,9 @@ const Index = () => {
     effect: "Lorsque le système digestif n'est pas nettoyé, il perd sa capacité à absorber les éléments nutritifs. Des déchets résiduels restent très souvent dans les intestins, même avec des selles régulières."
   };
 
+const Index = () => {
+  const [isImageOpen, setIsImageOpen] = useState(false);
+
   return (
     <div className="min-h-screen">
       {/* Hero Banner Section */}
@@ -168,7 +170,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* New Product Information Section */}
+      {/* Product Information Section */}
       <section className="py-16 bg-gradient-to-b from-white to-green-50">
         <div className="container mx-auto px-4">
           <motion.div
@@ -178,17 +180,44 @@ const Index = () => {
             className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
           >
             <div className="relative">
-              <motion.img
-                src="/lovable-uploads/647cfe48-3107-4bc8-80b1-c478f0cc4cb9.png"
-                alt="Shake Off Phyto Fiber Packaging"
-                className="w-full max-w-lg mx-auto rounded-lg shadow-xl"
-                initial={{ scale: 0.95 }}
-                whileInView={{ scale: 1 }}
-                transition={{ duration: 0.5 }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-green-500/10 to-transparent rounded-lg" />
+              <Dialog>
+                <DialogTrigger asChild>
+                  <motion.div
+                    className="cursor-pointer relative group"
+                    initial={{ scale: 0.95 }}
+                    whileInView={{ scale: 1 }}
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <motion.img
+                      src="/lovable-uploads/647cfe48-3107-4bc8-80b1-c478f0cc4cb9.png"
+                      alt="Shake Off Phyto Fiber Packaging"
+                      className="w-full max-w-lg mx-auto rounded-lg shadow-xl"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-green-500/10 to-transparent rounded-lg" />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-lg flex items-center justify-center">
+                      <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-lg font-medium">
+                        Cliquez pour agrandir
+                      </span>
+                    </div>
+                  </motion.div>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl w-full">
+                  <DialogHeader>
+                    <DialogTitle>Shake Off Phyto Fiber - Vue détaillée</DialogTitle>
+                  </DialogHeader>
+                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg">
+                    <img
+                      src="/lovable-uploads/647cfe48-3107-4bc8-80b1-c478f0cc4cb9.png"
+                      alt="Shake Off Phyto Fiber Packaging"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
 
+            {/* Product Information Content */}
             <div className="space-y-6">
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
