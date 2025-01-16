@@ -125,6 +125,7 @@ const productInfo = {
 const Index = () => {
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
+  const [showMoreInfo, setShowMoreInfo] = useState(false);
 
   const handleImageClick = (imageSrc: string) => {
     if (zoomedImage === imageSrc) {
@@ -156,12 +157,53 @@ const Index = () => {
               <p className="text-xl text-green-700 mb-8">
                 Votre solution naturelle pour une détoxification efficace et un bien-être optimal
               </p>
-              <Button 
-                size="lg" 
-                className="bg-green-600 hover:bg-green-700 text-white px-8"
-              >
-                En savoir plus
-              </Button>
+              <Dialog open={showMoreInfo} onOpenChange={setShowMoreInfo}>
+                <DialogTrigger asChild>
+                  <Button 
+                    size="lg" 
+                    className="bg-green-600 hover:bg-green-700 text-white px-8"
+                  >
+                    En savoir plus
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl h-[80vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl text-green-800">Informations détaillées</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-8 p-4">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5 }}
+                      className="relative"
+                    >
+                      <motion.img
+                        src={siteImages.productInfo1}
+                        alt="Information détaillée 1"
+                        className={`w-full rounded-lg shadow-xl cursor-pointer transition-transform duration-300 ${
+                          zoomedImage === siteImages.productInfo1 ? "scale-150" : ""
+                        }`}
+                        onClick={() => handleImageClick(siteImages.productInfo1)}
+                      />
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
+                      className="relative"
+                    >
+                      <motion.img
+                        src={siteImages.productInfo2}
+                        alt="Information détaillée 2"
+                        className={`w-full rounded-lg shadow-xl cursor-pointer transition-transform duration-300 ${
+                          zoomedImage === siteImages.productInfo2 ? "scale-150" : ""
+                        }`}
+                        onClick={() => handleImageClick(siteImages.productInfo2)}
+                      />
+                    </motion.div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </motion.div>
             <motion.img 
               src={siteImages.productHero}
