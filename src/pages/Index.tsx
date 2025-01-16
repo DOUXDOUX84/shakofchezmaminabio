@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { siteImages } from "@/config/images";
 
 const benefits = [
   "Pas d'effets secondaires car c'est une combinaison de nutriments actifs",
@@ -124,6 +125,7 @@ const productInfo = {
 const Index = () => {
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
+  const [useAlternativeImages, setUseAlternativeImages] = useState(false);
 
   const handleImageClick = (imageSrc: string) => {
     if (zoomedImage === imageSrc) {
@@ -133,8 +135,26 @@ const Index = () => {
     }
   };
 
+  const toggleImages = () => {
+    setUseAlternativeImages(!useAlternativeImages);
+  };
+
+  const getCurrentImages = () => ({
+    hero: useAlternativeImages ? siteImages.alternativeHero : siteImages.productHero,
+    packaging: useAlternativeImages ? siteImages.alternativePackaging : siteImages.productPackaging,
+  });
+
+  const currentImages = getCurrentImages();
+
   return (
     <div className="min-h-screen">
+      <Button
+        onClick={toggleImages}
+        className="fixed top-4 right-4 z-50 bg-green-600 hover:bg-green-700 text-white"
+      >
+        Changer les images
+      </Button>
+
       {/* Hero Banner Section */}
       <section className="relative h-[90vh] flex items-center justify-center bg-gradient-to-b from-green-50 via-white to-yellow-50 overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -163,15 +183,15 @@ const Index = () => {
               </Button>
             </motion.div>
             <motion.img 
-              src="/lovable-uploads/647cfe48-3107-4bc8-80b1-c478f0cc4cb9.png"
+              src={currentImages.hero}
               alt="Shake Off Phyto Fiber Présentation"
               className={`w-full max-w-xl mx-auto rounded-lg shadow-2xl cursor-pointer transition-transform duration-300 ${
-                zoomedImage === "/lovable-uploads/647cfe48-3107-4bc8-80b1-c478f0cc4cb9.png" ? "scale-150" : ""
+                zoomedImage === currentImages.hero ? "scale-150" : ""
               }`}
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5 }}
-              onClick={() => handleImageClick("/lovable-uploads/647cfe48-3107-4bc8-80b1-c478f0cc4cb9.png")}
+              onClick={() => handleImageClick(currentImages.hero)}
             />
           </div>
         </div>
@@ -188,12 +208,12 @@ const Index = () => {
           >
             <div className="relative">
               <motion.img
-                src="/lovable-uploads/269d88e5-bc61-48cc-bd76-af48f95c608c.png"
+                src={currentImages.packaging}
                 alt="Shake Off Phyto Fiber Packaging"
                 className={`w-full max-w-lg mx-auto rounded-lg shadow-xl cursor-pointer transition-transform duration-300 ${
-                  zoomedImage === "/lovable-uploads/269d88e5-bc61-48cc-bd76-af48f95c608c.png" ? "scale-150" : ""
+                  zoomedImage === currentImages.packaging ? "scale-150" : ""
                 }`}
-                onClick={() => handleImageClick("/lovable-uploads/269d88e5-bc61-48cc-bd76-af48f95c608c.png")}
+                onClick={() => handleImageClick(currentImages.packaging)}
               />
             </div>
 
