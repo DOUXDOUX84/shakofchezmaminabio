@@ -4,5 +4,5 @@ const supabaseUrl = 'https://csfpfatfknjzednaypbx.supabase.co';
 
 export const supabase = createClient(
   supabaseUrl,
-  import.meta.env.VITE_SUPABASE_API_KEY || ''
+  process.env.SUPABASE_API_KEY || ''
 );
