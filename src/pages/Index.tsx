@@ -1,10 +1,10 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { getSiteImages } from "@/config/images";
+import { siteImages } from "@/config/images";
 
 const benefits = [
   "Pas d'effets secondaires car c'est une combinaison de nutriments actifs",
@@ -125,20 +125,6 @@ const productInfo = {
 const Index = () => {
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
-  const [images, setImages] = useState({
-    productHero: "/lovable-uploads/647cfe48-3107-4bc8-80b1-c478f0cc4cb9.png",
-    productPackaging: "/lovable-uploads/269d88e5-bc61-48cc-bd76-af48f95c608c.png",
-    alternativeHero: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e",
-    alternativePackaging: "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b",
-  });
-
-  useEffect(() => {
-    const loadImages = async () => {
-      const siteImages = await getSiteImages();
-      setImages(siteImages);
-    };
-    loadImages();
-  }, []);
 
   const handleImageClick = (imageSrc: string) => {
     if (zoomedImage === imageSrc) {
@@ -178,15 +164,15 @@ const Index = () => {
               </Button>
             </motion.div>
             <motion.img 
-              src={images.productHero}
+              src={siteImages.productHero}
               alt="Shake Off Phyto Fiber Présentation"
               className={`w-full max-w-xl mx-auto rounded-lg shadow-2xl cursor-pointer transition-transform duration-300 ${
-                zoomedImage === images.productHero ? "scale-150" : ""
+                zoomedImage === siteImages.productHero ? "scale-150" : ""
               }`}
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5 }}
-              onClick={() => handleImageClick(images.productHero)}
+              onClick={() => handleImageClick(siteImages.productHero)}
             />
           </div>
         </div>
@@ -203,12 +189,12 @@ const Index = () => {
           >
             <div className="relative">
               <motion.img
-                src={images.productPackaging}
+                src={siteImages.productPackaging}
                 alt="Shake Off Phyto Fiber Packaging"
                 className={`w-full max-w-lg mx-auto rounded-lg shadow-xl cursor-pointer transition-transform duration-300 ${
-                  zoomedImage === images.productPackaging ? "scale-150" : ""
+                  zoomedImage === siteImages.productPackaging ? "scale-150" : ""
                 }`}
-                onClick={() => handleImageClick(images.productPackaging)}
+                onClick={() => handleImageClick(siteImages.productPackaging)}
               />
             </div>
 
