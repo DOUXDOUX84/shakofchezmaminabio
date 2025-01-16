@@ -5,121 +5,121 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
-  const benefits = [
-    "Pas d'effets secondaires car c'est une combinaison de nutriments actifs",
-    "Rapide, efficace, au goût agréable",
-    "Élimine les déchets du trajet intestinal",
-    "Élimine les graisses nocives stockées depuis longtemps dans l'appareil digestif",
-    "Stimule de bonnes bactéries telles que les BIFIDUS",
-    "Favorise les mouvements péristaltiques de l'intestin",
-    "Aide à prévenir l'accumulation de matières grasses",
-    "Réduit également le mauvais cholestérol"
-  ];
+const benefits = [
+  "Pas d'effets secondaires car c'est une combinaison de nutriments actifs",
+  "Rapide, efficace, au goût agréable",
+  "Élimine les déchets du trajet intestinal",
+  "Élimine les graisses nocives stockées depuis longtemps dans l'appareil digestif",
+  "Stimule de bonnes bactéries telles que les BIFIDUS",
+  "Favorise les mouvements péristaltiques de l'intestin",
+  "Aide à prévenir l'accumulation de matières grasses",
+  "Réduit également le mauvais cholestérol"
+];
 
-  const keyBenefits = [
-    {
-      id: "detox",
-      title: "Détoxification Naturelle",
-      description: "Un nettoyage en profondeur de votre système digestif grâce aux fibres naturelles",
-      details: [
-        "Élimine les toxines accumulées",
-        "Nettoie le côlon en douceur",
-        "Améliore le transit intestinal",
-        "Réduit les ballonnements"
-      ],
-      icon: "🌿"
-    },
-    {
-      id: "prevention",
-      title: "Prévention Santé",
-      description: "Protection active contre divers problèmes de santé",
-      details: [
-        "Prévient les maladies du côlon",
-        "Régule le cholestérol",
-        "Renforce le système immunitaire",
-        "Améliore la santé intestinale"
-      ],
-      icon: "🛡️"
-    },
-    {
-      id: "digestion",
-      title: "Digestion Optimale",
-      description: "Amélioration significative de votre digestion quotidienne",
-      details: [
-        "Facilite la digestion",
-        "Réduit la constipation",
-        "Équilibre la flore intestinale",
-        "Améliore l'absorption des nutriments"
-      ],
-      icon: "✨"
-    }
-  ];
-
-  const ingredients = [
-    {
-      name: "Fibre Végétale",
-      description: "Source naturelle de fibres alimentaires essentielles pour la santé digestive",
-      benefits: [
-        "Favorise un transit intestinal régulier",
-        "Aide à éliminer les toxines",
-        "Procure un effet rassasiant"
-      ],
-      icon: "🌱"
-    },
-    {
-      name: "Avoine Organique",
-      description: "Céréale complète riche en fibres solubles et en nutriments",
-      benefits: [
-        "Régule le taux de cholestérol",
-        "Stabilise la glycémie",
-        "Soutient la santé cardiovasculaire"
-      ],
-      icon: "🌾"
-    },
-    {
-      name: "Inuline",
-      description: "Prébiotique naturel qui nourrit les bonnes bactéries intestinales",
-      benefits: [
-        "Stimule la croissance des probiotiques",
-        "Améliore l'absorption des minéraux",
-        "Renforce le système immunitaire"
-      ],
-      icon: "🦠"
-    },
-    {
-      name: "Baie de Roselle",
-      description: "Plante aux propriétés antioxydantes et détoxifiantes",
-      benefits: [
-        "Soutient la détoxification du foie",
-        "Riche en vitamine C",
-        "Propriétés anti-inflammatoires"
-      ],
-      icon: "🫐"
-    },
-    {
-      name: "Garcinia Cambogia",
-      description: "Fruit tropical aux propriétés amincissantes naturelles",
-      benefits: [
-        "Aide à la gestion du poids",
-        "Régule l'appétit",
-        "Favorise le métabolisme des graisses"
-      ],
-      icon: "🍊"
-    }
-  ];
-
-  const productInfo = {
-    title: "SHAKE OFF Phyto Fiber",
-    description: "Un excellent Désintoxiquant naturel",
+const keyBenefits = [
+  {
+    id: "detox",
+    title: "Détoxification Naturelle",
+    description: "Un nettoyage en profondeur de votre système digestif grâce aux fibres naturelles",
     details: [
-      "Dans la phytothérapie, le concept de rajeunissement et de désintoxication est tout aussi important que l'alimentation équilibrée.",
-      "Cette boisson nutritionnelle est composée d'ingrédients naturels qui nettoient et évacuent les déchets et toxines du colon.",
-      "Après la consommation, vous serez surpris de constater les déchets accumulés et ressentirez une sensation incroyablement confortable."
+      "Élimine les toxines accumulées",
+      "Nettoie le côlon en douceur",
+      "Améliore le transit intestinal",
+      "Réduit les ballonnements"
     ],
-    packaging: "Boîte de 12 sachets de 20g",
-    warning: "Bien que la plupart des gens soient conscients de l'importance de la nutrition, peu se focalisent sur la désintoxication de l'intestin et du colon.",
-    effect: "Lorsque le système digestif n'est pas nettoyé, il perd sa capacité à absorber les éléments nutritifs. Des déchets résiduels restent très souvent dans les intestins, même avec des selles régulières."
-  };
+    icon: "🌿"
+  },
+  {
+    id: "prevention",
+    title: "Prévention Santé",
+    description: "Protection active contre divers problèmes de santé",
+    details: [
+      "Prévient les maladies du côlon",
+      "Régule le cholestérol",
+      "Renforce le système immunitaire",
+      "Améliore la santé intestinale"
+    ],
+    icon: "🛡️"
+  },
+  {
+    id: "digestion",
+    title: "Digestion Optimale",
+    description: "Amélioration significative de votre digestion quotidienne",
+    details: [
+      "Facilite la digestion",
+      "Réduit la constipation",
+      "Équilibre la flore intestinale",
+      "Améliore l'absorption des nutriments"
+    ],
+    icon: "✨"
+  }
+];
+
+const ingredients = [
+  {
+    name: "Fibre Végétale",
+    description: "Source naturelle de fibres alimentaires essentielles pour la santé digestive",
+    benefits: [
+      "Favorise un transit intestinal régulier",
+      "Aide à éliminer les toxines",
+      "Procure un effet rassasiant"
+    ],
+    icon: "🌱"
+  },
+  {
+    name: "Avoine Organique",
+    description: "Céréale complète riche en fibres solubles et en nutriments",
+    benefits: [
+      "Régule le taux de cholestérol",
+      "Stabilise la glycémie",
+      "Soutient la santé cardiovasculaire"
+    ],
+    icon: "🌾"
+  },
+  {
+    name: "Inuline",
+    description: "Prébiotique naturel qui nourrit les bonnes bactéries intestinales",
+    benefits: [
+      "Stimule la croissance des probiotiques",
+      "Améliore l'absorption des minéraux",
+      "Renforce le système immunitaire"
+    ],
+    icon: "🦠"
+  },
+  {
+    name: "Baie de Roselle",
+    description: "Plante aux propriétés antioxydantes et détoxifiantes",
+    benefits: [
+      "Soutient la détoxification du foie",
+      "Riche en vitamine C",
+      "Propriétés anti-inflammatoires"
+    ],
+    icon: "🫐"
+  },
+  {
+    name: "Garcinia Cambogia",
+    description: "Fruit tropical aux propriétés amincissantes naturelles",
+    benefits: [
+      "Aide à la gestion du poids",
+      "Régule l'appétit",
+      "Favorise le métabolisme des graisses"
+    ],
+    icon: "🍊"
+  }
+];
+
+const productInfo = {
+  title: "SHAKE OFF Phyto Fiber",
+  description: "Un excellent Désintoxiquant naturel",
+  details: [
+    "Dans la phytothérapie, le concept de rajeunissement et de désintoxication est tout aussi important que l'alimentation équilibrée.",
+    "Cette boisson nutritionnelle est composée d'ingrédients naturels qui nettoient et évacuent les déchets et toxines du colon.",
+    "Après la consommation, vous serez surpris de constater les déchets accumulés et ressentirez une sensation incroyablement confortable."
+  ],
+  packaging: "Boîte de 12 sachets de 20g",
+  warning: "Bien que la plupart des gens soient conscients de l'importance de la nutrition, peu se focalisent sur la désintoxication de l'intestin et du colon.",
+  effect: "Lorsque le système digestif n'est pas nettoyé, il perd sa capacité à absorber les éléments nutritifs. Des déchets résiduels restent très souvent dans les intestins, même avec des selles régulières."
+};
 
 const Index = () => {
   const [isImageOpen, setIsImageOpen] = useState(false);
@@ -127,45 +127,47 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Banner Section */}
-      <section className="relative h-[80vh] flex items-center justify-center bg-gradient-to-b from-green-50 to-white overflow-hidden">
+      <section className="relative h-[90vh] flex items-center justify-center bg-gradient-to-b from-green-50 to-white overflow-hidden">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-green-600/10" />
         </div>
         
         <div className="container mx-auto px-4 z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div className="text-left space-y-6">
-              <h1 className="text-4xl md:text-6xl font-bold text-green-800 leading-tight">
-                Détoxifiez Naturellement
-                <span className="block text-green-600">Votre Corps</span>
-              </h1>
-              <p className="text-xl text-gray-700 max-w-lg">
-                Découvrez Shake Off Phyto Fiber, votre allié naturel pour une détoxification efficace et un système digestif sain.
-              </p>
-              <div className="flex gap-4">
-                <Button 
-                  size="lg" 
-                  className="bg-green-600 hover:bg-green-700 text-white px-8"
+          <div className="grid grid-cols-1 gap-8 items-center">
+            <Dialog>
+              <DialogTrigger asChild>
+                <motion.div
+                  className="cursor-pointer relative group max-w-5xl mx-auto"
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.5 }}
                 >
-                  Commander Maintenant
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="border-green-600 text-green-600 hover:bg-green-50"
-                >
-                  En Savoir Plus
-                </Button>
-              </div>
-            </div>
-            
-            <div className="relative">
-              <img 
-                src="/lovable-uploads/d879f1bd-274a-4542-9c4e-8613accba9ce.png"
-                alt="Shake Off Phyto Fiber"
-                className="w-full max-w-md mx-auto rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300"
-              />
-            </div>
+                  <img 
+                    src="/lovable-uploads/269d88e5-bc61-48cc-bd76-af48f95c608c.png"
+                    alt="Shake Off Phyto Fiber Présentation"
+                    className="w-full rounded-lg shadow-2xl"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-lg flex items-center justify-center">
+                    <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-lg font-medium">
+                      Cliquez pour agrandir
+                    </span>
+                  </div>
+                </motion.div>
+              </DialogTrigger>
+              <DialogContent className="max-w-7xl w-full">
+                <DialogHeader>
+                  <DialogTitle>Shake Off Phyto Fiber - Vue détaillée</DialogTitle>
+                </DialogHeader>
+                <div className="relative w-full overflow-hidden rounded-lg">
+                  <img
+                    src="/lovable-uploads/269d88e5-bc61-48cc-bd76-af48f95c608c.png"
+                    alt="Shake Off Phyto Fiber Présentation"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </section>
