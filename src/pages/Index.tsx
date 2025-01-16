@@ -134,40 +134,14 @@ const Index = () => {
         
         <div className="container mx-auto px-4 z-10">
           <div className="grid grid-cols-1 gap-8 items-center">
-            <Dialog>
-              <DialogTrigger asChild>
-                <motion.div
-                  className="cursor-pointer relative group max-w-5xl mx-auto"
-                  initial={{ scale: 0.95, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <img 
-                    src="/lovable-uploads/269d88e5-bc61-48cc-bd76-af48f95c608c.png"
-                    alt="Shake Off Phyto Fiber Présentation"
-                    className="w-full rounded-lg shadow-2xl"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-lg flex items-center justify-center">
-                    <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-lg font-medium">
-                      Cliquez pour agrandir
-                    </span>
-                  </div>
-                </motion.div>
-              </DialogTrigger>
-              <DialogContent className="max-w-7xl w-full">
-                <DialogHeader>
-                  <DialogTitle>Shake Off Phyto Fiber - Vue détaillée</DialogTitle>
-                </DialogHeader>
-                <div className="relative w-full overflow-hidden rounded-lg">
-                  <img
-                    src="/lovable-uploads/269d88e5-bc61-48cc-bd76-af48f95c608c.png"
-                    alt="Shake Off Phyto Fiber Présentation"
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-              </DialogContent>
-            </Dialog>
+            <motion.img 
+              src="/lovable-uploads/647cfe48-3107-4bc8-80b1-c478f0cc4cb9.png"
+              alt="Shake Off Phyto Fiber Présentation"
+              className="w-full max-w-5xl mx-auto rounded-lg shadow-2xl"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            />
           </div>
         </div>
       </section>
@@ -192,7 +166,7 @@ const Index = () => {
                     transition={{ duration: 0.3 }}
                   >
                     <motion.img
-                      src="/lovable-uploads/647cfe48-3107-4bc8-80b1-c478f0cc4cb9.png"
+                      src="/lovable-uploads/269d88e5-bc61-48cc-bd76-af48f95c608c.png"
                       alt="Shake Off Phyto Fiber Packaging"
                       className="w-full max-w-lg mx-auto rounded-lg shadow-xl"
                     />
@@ -210,7 +184,7 @@ const Index = () => {
                   </DialogHeader>
                   <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg">
                     <img
-                      src="/lovable-uploads/647cfe48-3107-4bc8-80b1-c478f0cc4cb9.png"
+                      src="/lovable-uploads/269d88e5-bc61-48cc-bd76-af48f95c608c.png"
                       alt="Shake Off Phyto Fiber Packaging"
                       className="w-full h-full object-contain"
                     />
@@ -219,7 +193,6 @@ const Index = () => {
               </Dialog>
             </div>
 
-            {/* Product Information Content */}
             <div className="space-y-6">
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
