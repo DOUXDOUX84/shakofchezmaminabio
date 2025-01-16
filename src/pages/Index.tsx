@@ -136,9 +136,9 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Banner Section */}
-      <section className="relative h-[90vh] flex items-center justify-center bg-gradient-to-b from-green-50 to-white overflow-hidden">
+      <section className="relative h-[90vh] flex items-center justify-center bg-gradient-to-b from-green-50 via-white to-yellow-50 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-green-600/10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 to-yellow-500/5" />
         </div>
         
         <div className="container mx-auto px-4 z-10">
@@ -178,7 +178,7 @@ const Index = () => {
       </section>
 
       {/* Product Information Section */}
-      <section className="py-16 bg-gradient-to-b from-white to-green-50">
+      <section className="py-16 bg-gradient-to-b from-yellow-50 via-white to-green-50">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -257,7 +257,7 @@ const Index = () => {
             {benefits.map((benefit, index) => (
               <Card 
                 key={index} 
-                className="hover:shadow-lg transition-shadow border-green-100"
+                className="hover:shadow-lg transition-shadow border-green-100 bg-gradient-to-br from-white to-green-50"
               >
                 <CardContent className="pt-6">
                   <p className="text-gray-700">{benefit}</p>
@@ -354,7 +354,7 @@ const Index = () => {
       </section>
 
       {/* Ingredients Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gradient-to-br from-white via-yellow-50/30 to-green-50/30">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -365,7 +365,7 @@ const Index = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-green-800 mb-4">
               Composition 100% Naturelle
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-green-700 max-w-2xl mx-auto">
               Découvrez les ingrédients soigneusement sélectionnés qui font de Shake Off Phyto Fiber un produit unique
             </p>
           </motion.div>
@@ -380,13 +380,13 @@ const Index = () => {
               >
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Card className="cursor-pointer hover:shadow-lg transition-shadow border-green-100">
+                    <Card className="cursor-pointer hover:shadow-lg transition-shadow border-green-100 bg-gradient-to-br from-white to-green-50/50">
                       <CardHeader>
                         <div className="text-4xl mb-4">{ingredient.icon}</div>
                         <CardTitle className="text-xl text-green-800">
                           {ingredient.name}
                         </CardTitle>
-                        <CardDescription className="text-gray-600">
+                        <CardDescription className="text-green-700">
                           {ingredient.description}
                         </CardDescription>
                       </CardHeader>
