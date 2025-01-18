@@ -130,7 +130,7 @@ const Index = () => {
   const isMobile = useIsMobile();
 
   const handleImageClick = (imageSrc: string) => {
-    if (isMobile) return; // Désactive le zoom sur mobile
+    if (isMobile) return;
     if (zoomedImage === imageSrc) {
       setZoomedImage(null);
     } else {
@@ -212,14 +212,16 @@ const Index = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-center"
+              className="relative"
             >
-              <h2 className="text-2xl md:text-3xl font-bold text-green-800 mb-4">
-                {productInfo.title}
-              </h2>
-              <p className="text-lg text-green-700 mb-6">
-                {productInfo.description}
-              </p>
+              <motion.img
+                src={siteImages.productHero}
+                alt="Shake Off Phyto Fiber Présentation"
+                className="w-full max-w-xl mx-auto rounded-lg shadow-2xl"
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              />
             </motion.div>
           </div>
         </div>
