@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { siteImages } from "@/config/images";
+import { useImageUrls } from "@/config/images";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { OrderSection } from "./OrderSection";
 
@@ -10,6 +10,7 @@ export const HeroSection = () => {
   const [showMoreInfo, setShowMoreInfo] = useState(false);
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
   const isMobile = useIsMobile();
+  const { siteImages, loading } = useImageUrls();
 
   const handleImageClick = (imageSrc: string) => {
     if (isMobile) return;
@@ -19,6 +20,12 @@ export const HeroSection = () => {
       setZoomedImage(imageSrc);
     }
   };
+
+  if (loading) {
+    return <div className="min-h-[90vh] flex items-center justify-center">
+      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div>
+    </div>;
+  }
 
   return (
     <section className="relative min-h-[90vh] md:h-[90vh] flex items-center justify-center bg-gradient-to-b from-green-50 via-white to-yellow-50 overflow-hidden py-8 md:py-0">
