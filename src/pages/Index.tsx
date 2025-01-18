@@ -127,17 +127,29 @@ const paymentMethods = [
   {
     name: "VISA",
     image: siteImages.visa,
-    description: "Paiement sécurisé par carte VISA"
+    description: "Paiement sécurisé par carte VISA",
+    onClick: () => {
+      console.log("Paiement par VISA sélectionné");
+      // Vous pourrez ajouter ici la logique de paiement VISA
+    }
   },
   {
     name: "Orange Money",
     image: siteImages.orangeMoney,
-    description: "Paiement mobile via Orange Money"
+    description: "Paiement mobile via Orange Money",
+    onClick: () => {
+      console.log("Paiement par Orange Money sélectionné");
+      // Vous pourrez ajouter ici la logique de paiement Orange Money
+    }
   },
   {
     name: "WAVE",
     image: siteImages.wave,
-    description: "Paiement rapide avec WAVE"
+    description: "Paiement rapide avec WAVE",
+    onClick: () => {
+      console.log("Paiement par WAVE sélectionné");
+      // Vous pourrez ajouter ici la logique de paiement WAVE
+    }
   }
 ];
 
@@ -435,10 +447,11 @@ const Index = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow"
+                onClick={method.onClick}
+                className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
               >
                 <div className="flex flex-col items-center">
-                  <div className="w-32 h-32 mb-4 relative">
+                  <div className="w-32 h-32 mb-4 relative flex items-center justify-center">
                     <img
                       src={method.image}
                       alt={`Paiement ${method.name}`}
