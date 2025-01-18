@@ -8,16 +8,16 @@ import { ContactButton } from "@/components/ContactButton";
 const Index = () => {
   return (
     <div className="min-h-screen">
-      <div className="fixed top-4 right-4 z-50">
-        <ContactButton />
-      </div>
       <HeroSection />
       <BenefitsSection />
       <KeyBenefitsSection />
       <IngredientsSection />
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <OrderSection />
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <OrderSection />
+            <ContactButton />
+          </div>
         </div>
       </section>
     </div>

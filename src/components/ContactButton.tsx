@@ -34,9 +34,9 @@ export const ContactButton = () => {
       <DialogTrigger asChild>
         <Button 
           variant="outline" 
-          className="gap-2 bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] hover:from-[#8B5CF6] hover:to-[#7E69AB] text-white border-none shadow-lg hover:shadow-xl transition-all duration-300 font-semibold px-6"
+          className="bg-[#9b87f5] hover:bg-[#8B5CF6] text-white border-none shadow-lg hover:shadow-xl transition-all duration-300 font-semibold px-6 py-4 rounded-lg text-lg"
         >
-          <Phone className="h-4 w-4" />
+          <Phone className="h-4 w-4 mr-2" />
           Nous contacter
         </Button>
       </DialogTrigger>
