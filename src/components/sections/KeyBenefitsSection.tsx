@@ -1,3 +1,4 @@
+import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -59,15 +60,20 @@ export const KeyBenefitsSection = () => {
         </motion.div>
 
         <Tabs defaultValue="detox" className="w-full max-w-4xl mx-auto">
-          <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 h-auto gap-2 bg-transparent">
+          <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 h-auto gap-4 bg-transparent">
             {keyBenefits.map((benefit) => (
               <TabsTrigger
                 key={benefit.id}
                 value={benefit.id}
-                className="data-[state=active]:bg-green-100 data-[state=active]:text-green-800 px-3 py-2 text-sm md:text-base whitespace-normal h-auto min-h-[48px] flex items-center justify-center text-center"
+                className="relative overflow-hidden group bg-white border-2 border-transparent data-[state=active]:border-green-500 rounded-xl px-6 py-4 text-base md:text-lg font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg data-[state=active]:shadow-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-50 data-[state=active]:to-white"
               >
-                <span className="mr-2">{benefit.icon}</span>
-                {benefit.title}
+                <div className="absolute inset-0 bg-gradient-to-r from-green-100/50 to-white/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="relative z-10 flex items-center justify-center gap-3">
+                  <span className="text-2xl">{benefit.icon}</span>
+                  <span className="text-green-800 group-data-[state=active]:text-green-700">
+                    {benefit.title}
+                  </span>
+                </span>
               </TabsTrigger>
             ))}
           </TabsList>
@@ -75,32 +81,32 @@ export const KeyBenefitsSection = () => {
             <TabsContent
               key={benefit.id}
               value={benefit.id}
-              className="mt-6 focus-visible:outline-none focus-visible:ring-0"
+              className="mt-8 focus-visible:outline-none focus-visible:ring-0"
             >
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="bg-white rounded-lg shadow-lg p-6 md:p-8"
+                className="bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-green-100"
               >
-                <div className="text-center mb-6">
-                  <span className="text-4xl mb-4 block">{benefit.icon}</span>
-                  <h3 className="text-xl md:text-2xl font-bold text-green-800 mb-3">
+                <div className="text-center mb-8">
+                  <span className="text-5xl mb-6 block animate-bounce">{benefit.icon}</span>
+                  <h3 className="text-2xl md:text-3xl font-bold text-green-800 mb-4">
                     {benefit.title}
                   </h3>
-                  <p className="text-gray-600">{benefit.description}</p>
+                  <p className="text-gray-600 text-lg">{benefit.description}</p>
                 </div>
-                <ul className="space-y-3">
+                <ul className="space-y-4">
                   {benefit.details.map((detail, index) => (
                     <motion.li
                       key={index}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className="flex items-center text-left text-gray-700"
+                      className="flex items-center text-left text-gray-700 bg-green-50/50 p-4 rounded-lg hover:bg-green-50 transition-colors duration-300"
                     >
-                      <span className="text-green-500 mr-3">✓</span>
-                      <span className="text-sm md:text-base">{detail}</span>
+                      <span className="text-green-500 mr-4 text-xl">✓</span>
+                      <span className="text-base md:text-lg">{detail}</span>
                     </motion.li>
                   ))}
                 </ul>
