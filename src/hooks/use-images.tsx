@@ -10,7 +10,7 @@ export type SiteImage = {
   description: string | null;
 };
 
-type ImagesResponse = Database['public']['Tables']['images']['Row'];
+type ImagesTable = Database['public']['Tables']['images']['Row'];
 
 export const useImages = () => {
   const [images, setImages] = useState<Record<string, SiteImage>>({});
@@ -22,13 +22,19 @@ export const useImages = () => {
       try {
         const { data, error: fetchError } = await supabase
           .from('images')
-          .select('*');
+          .select('*') as { data: ImagesTable[] | null, error: Error | null };
 
         if (fetchError) throw fetchError;
 
         const imageMap = (data || []).reduce<Record<string, SiteImage>>((acc, img) => ({
           ...acc,
-          [img.key]: img as SiteImage
+          [img.key]: {
+            id: img.id,
+            key: img.key,
+            url: img.url,
+            alt_text: img.alt_text,
+            description: img.description
+          }
         }), {});
 
         setImages(imageMap);
