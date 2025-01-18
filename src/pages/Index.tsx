@@ -208,91 +208,24 @@ const Index = () => {
                 </DialogContent>
               </Dialog>
             </motion.div>
-            <motion.img 
-              src={siteImages.productHero}
-              alt="Shake Off Phyto Fiber Présentation"
-              className={`w-full max-w-xl mx-auto rounded-lg shadow-2xl transition-transform duration-300 ${
-                !isMobile ? 'cursor-pointer' : ''
-              } ${zoomedImage === siteImages.productHero && !isMobile ? "scale-150" : ""}`}
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
-              onClick={() => handleImageClick(siteImages.productHero)}
-            />
+              className="text-center"
+            >
+              <h2 className="text-2xl md:text-3xl font-bold text-green-800 mb-4">
+                {productInfo.title}
+              </h2>
+              <p className="text-lg text-green-700 mb-6">
+                {productInfo.description}
+              </p>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Product Information Section */}
-      <section className="py-16 bg-gradient-to-b from-yellow-50 via-white to-green-50">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
-          >
-            <div className="relative">
-              <motion.img
-                src={siteImages.productPackaging}
-                alt="Shake Off Phyto Fiber Packaging"
-                className={`w-full max-w-lg mx-auto rounded-lg shadow-xl cursor-pointer transition-transform duration-300 ${
-                  zoomedImage === siteImages.productPackaging ? "scale-150" : ""
-                }`}
-                onClick={() => handleImageClick(siteImages.productPackaging)}
-              />
-            </div>
-
-            <div className="space-y-6">
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <h2 className="text-3xl md:text-4xl font-bold text-green-800 mb-4">
-                  {productInfo.title}
-                </h2>
-                <p className="text-xl text-green-600 mb-6">
-                  {productInfo.description}
-                </p>
-                <div className="space-y-4">
-                  {productInfo.details.map((detail, index) => (
-                    <motion.p
-                      key={index}
-                      className="text-gray-700"
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      {detail}
-                    </motion.p>
-                  ))}
-                </div>
-
-                <div className="mt-8 p-4 bg-green-50 rounded-lg border border-green-100">
-                  <p className="text-green-800 font-medium">
-                    Conditionnement: {productInfo.packaging}
-                  </p>
-                </div>
-
-                <div className="mt-8">
-                  <Card className="bg-amber-50/50 border-amber-100">
-                    <CardContent className="pt-6">
-                      <p className="text-amber-800">
-                        ⚠️ {productInfo.warning}
-                      </p>
-                      <p className="mt-4 text-gray-700">
-                        {productInfo.effect}
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
+      {/* Rest of the sections */}
       {/* Benefits Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
