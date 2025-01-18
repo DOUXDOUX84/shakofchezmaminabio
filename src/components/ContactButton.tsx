@@ -1,4 +1,4 @@
-import { Phone, WhatsApp } from "lucide-react";
+import { Phone, MessageCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -38,7 +38,7 @@ export const ContactButton = () => {
             className="justify-start gap-2"
             onClick={() => window.open(whatsappLink, '_blank')}
           >
-            <WhatsApp className="h-4 w-4" />
+            <MessageCircle className="h-4 w-4" />
             WhatsApp
           </Button>
         </div>
