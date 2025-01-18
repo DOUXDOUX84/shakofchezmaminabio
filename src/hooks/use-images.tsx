@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { Database } from '@/integrations/supabase/types';
 
 export type SiteImage = {
   id: string;
@@ -8,6 +9,8 @@ export type SiteImage = {
   alt_text: string | null;
   description: string | null;
 };
+
+type ImagesResponse = Database['public']['Tables']['images']['Row'];
 
 export const useImages = () => {
   const [images, setImages] = useState<Record<string, SiteImage>>({});
@@ -23,9 +26,9 @@ export const useImages = () => {
 
         if (fetchError) throw fetchError;
 
-        const imageMap = (data || []).reduce((acc, img) => ({
+        const imageMap = (data || []).reduce<Record<string, SiteImage>>((acc, img) => ({
           ...acc,
-          [img.key]: img
+          [img.key]: img as SiteImage
         }), {});
 
         setImages(imageMap);
@@ -38,10 +41,8 @@ export const useImages = () => {
       }
     };
 
-    // Initial fetch
     fetchImages();
 
-    // Subscribe to changes
     const channel = supabase
       .channel('schema-db-changes')
       .on(
@@ -53,7 +54,6 @@ export const useImages = () => {
         },
         (payload) => {
           console.log('Image change detected:', payload);
-          // Refetch all images when any change occurs
           fetchImages();
         }
       )
