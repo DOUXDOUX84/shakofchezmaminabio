@@ -1,4 +1,6 @@
 import { Phone, MessageCircle } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Dialog,
   DialogContent,
@@ -8,9 +10,24 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
+const fetchContactInfo = async () => {
+  const { data, error } = await supabase
+    .from('contact_info')
+    .select('*')
+    .maybeSingle();
+  
+  if (error) throw error;
+  return data;
+};
+
 export const ContactButton = () => {
-  const phoneNumber = "+221 77 777 77 77"; // Remplacez par votre numéro
-  const whatsappLink = "https://wa.me/221777777777"; // Remplacez par votre lien WhatsApp
+  const { data: contactInfo, isLoading } = useQuery({
+    queryKey: ['contactInfo'],
+    queryFn: fetchContactInfo,
+  });
+
+  const phoneNumber = contactInfo?.phone_number || "+221 77 777 77 77"; // Fallback value
+  const whatsappLink = contactInfo?.whatsapp_link || "https://wa.me/221777777777"; // Fallback value
 
   return (
     <Dialog>
