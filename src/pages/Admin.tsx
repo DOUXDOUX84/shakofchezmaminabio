@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { LoaderCircle } from "lucide-react";
 
 const statusColors = {
   pending: "bg-yellow-500",
@@ -25,7 +26,7 @@ const statusColors = {
 };
 
 const Admin = () => {
-  const { data: orders, isLoading } = useQuery({
+  const { data: orders, isLoading, error } = useQuery({
     queryKey: ["orders"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -53,7 +54,34 @@ const Admin = () => {
     }
   };
 
-  if (isLoading) return <div>Chargement...</div>;
+  if (error) {
+    return (
+      <div className="container mx-auto py-10">
+        <div className="text-red-500">
+          Erreur lors du chargement des commandes: {error.message}
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto py-10 flex items-center justify-center">
+        <LoaderCircle className="h-8 w-8 animate-spin text-green-500" />
+      </div>
+    );
+  }
+
+  if (!orders || orders.length === 0) {
+    return (
+      <div className="container mx-auto py-10">
+        <h1 className="text-2xl font-bold mb-6">Gestion des Commandes</h1>
+        <div className="text-center py-8">
+          Aucune commande n'a été trouvée.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto py-10">
@@ -73,7 +101,7 @@ const Admin = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders?.map((order) => (
+            {orders.map((order) => (
               <TableRow key={order.id}>
                 <TableCell>
                   {new Date(order.created_at).toLocaleDateString()}
