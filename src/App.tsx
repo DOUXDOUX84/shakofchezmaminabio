@@ -17,34 +17,56 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const checkAdmin = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        const { data: roles } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
-        
-        setIsAdmin(roles?.role === 'admin');
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          const { data: roles, error } = await supabase
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', session.user.id)
+            .maybeSingle();
+          
+          if (error) {
+            console.error('Error fetching user role:', error);
+            setIsAdmin(false);
+          } else {
+            setIsAdmin(roles?.role === 'admin');
+          }
+        }
+      } catch (error) {
+        console.error('Error in checkAdmin:', error);
+        setIsAdmin(false);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     checkAdmin();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session) {
-        const { data: roles } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
-        
-        setIsAdmin(roles?.role === 'admin');
-      } else {
+      try {
+        if (session) {
+          const { data: roles, error } = await supabase
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', session.user.id)
+            .maybeSingle();
+          
+          if (error) {
+            console.error('Error fetching user role:', error);
+            setIsAdmin(false);
+          } else {
+            setIsAdmin(roles?.role === 'admin');
+          }
+        } else {
+          setIsAdmin(false);
+        }
+      } catch (error) {
+        console.error('Error in auth state change:', error);
         setIsAdmin(false);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
