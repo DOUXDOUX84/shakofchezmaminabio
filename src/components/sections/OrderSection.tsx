@@ -1,5 +1,6 @@
 import { CartForm } from "./CartForm";
 import { Button } from "@/components/ui/button";
+import { ShoppingCart } from "lucide-react";
 
 const InternationalButton = ({ 
   href, 
@@ -61,7 +62,10 @@ const InternationalButton = ({
 export const OrderSection = () => {
   return (
     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-      <CartForm />
+      <Button className="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg transform transition hover:scale-105 flex items-center gap-2">
+        <ShoppingCart className="w-6 h-6" />
+        Ajouter au panier
+      </Button>
       
       <InternationalButton
         href="https://edmarkusa.com/?referrer=SNFDK000142"
