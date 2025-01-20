@@ -1,6 +1,15 @@
 import { CartForm } from "./CartForm";
 import { Button } from "@/components/ui/button";
-import { Flag } from "lucide-react";
+</lov-replace>
+
+<lov-search>
+        <>
+          <Flag className="h-5 w-5" />
+          <span className="text-xl">
+</lov-search>
+<lov-replace>
+        <>
+          <span className="text-xl">
 
 const InternationalButton = ({ 
   href, 
