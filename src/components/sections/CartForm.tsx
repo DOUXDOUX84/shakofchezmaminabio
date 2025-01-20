@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { motion } from "framer-motion";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState } from "react";
 
 const formSchema = z.object({
@@ -15,9 +16,14 @@ const formSchema = z.object({
   address: z.string().min(5, "L'adresse doit contenir au moins 5 caractères"),
   phone: z.string().min(9, "Le numéro de téléphone doit contenir au moins 9 chiffres"),
   quantity: z.number().min(1, "La quantité minimum est de 1").max(100, "La quantité maximum est de 100"),
+  paymentMethod: z.enum(["orange", "wave"], {
+    required_error: "Veuillez choisir une méthode de paiement",
+  }),
 });
 
-const PRICE_PER_BOX = 15000; // Prix en FCFA
+const PRICE_PER_BOX = 25800; // Prix en FCFA
+const ORANGE_MONEY_NUMBER = "+221776344286";
+const WAVE_PAYMENT_LINK = "https://pay.wave.com/m/M_MO1NT4Bhh6eN/c/sn/";
 
 export const CartForm = () => {
   const [isOrderSummaryVisible, setIsOrderSummaryVisible] = useState(false);
@@ -29,26 +35,29 @@ export const CartForm = () => {
       address: "",
       phone: "",
       quantity: 1,
+      paymentMethod: "orange",
     },
   });
 
   const quantity = form.watch("quantity");
+  const paymentMethod = form.watch("paymentMethod");
   const totalPrice = quantity * PRICE_PER_BOX;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      console.log("Commande soumise:", values);
-      toast({
-        title: "Commande en cours de traitement",
-        description: "Nous allons vous rediriger vers la page de paiement...",
-      });
-      // Ici nous ajouterons la logique de paiement plus tard
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Erreur",
-        description: "Une erreur est survenue lors de la soumission de votre commande.",
-      });
+    console.log("Commande soumise:", values);
+    
+    const paymentInstructions = values.paymentMethod === "orange" 
+      ? `Veuillez effectuer le paiement de ${totalPrice.toLocaleString()} FCFA via Orange Money au ${ORANGE_MONEY_NUMBER}`
+      : `Veuillez effectuer le paiement de ${totalPrice.toLocaleString()} FCFA via Wave en cliquant sur le lien de paiement ou en scannant le QR code.`;
+
+    toast({
+      title: "Commande enregistrée !",
+      description: paymentInstructions,
+      duration: 10000,
+    });
+
+    if (values.paymentMethod === "wave") {
+      window.open(WAVE_PAYMENT_LINK, '_blank');
     }
   };
 
@@ -144,6 +153,62 @@ export const CartForm = () => {
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="paymentMethod"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Méthode de paiement</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex flex-col space-y-1"
+                    >
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="orange" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          Orange Money ({ORANGE_MONEY_NUMBER})
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="wave" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          Wave
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {form.watch("paymentMethod") === "wave" && (
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <p className="text-sm text-blue-800 mb-2">
+                  Paiement Wave disponible via QR code ou lien direct :
+                </p>
+                <img 
+                  src="/lovable-uploads/e10db5d5-86d1-4392-8cab-0d28340d317b.png" 
+                  alt="QR Code Wave"
+                  className="w-32 h-32 mx-auto mb-2"
+                />
+                <a 
+                  href={WAVE_PAYMENT_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800 underline text-sm block text-center"
+                >
+                  Cliquez ici pour payer avec Wave
+                </a>
+              </div>
+            )}
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
