@@ -59,16 +59,6 @@ export const ImageCarousel = () => {
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <div className={cn(
-                  "absolute bg-gradient-to-t from-black/60 to-transparent p-4",
-                  image.titlePosition === "bottom-right" 
-                    ? "bottom-0 right-0 text-right w-1/2 md:w-1/3" 
-                    : "bottom-0 left-0 right-0"
-                )}>
-                  <h3 className="text-white text-lg md:text-xl font-semibold">
-                    {image.title}
-                  </h3>
-                </div>
               </motion.div>
             </CarouselItem>
           ))}
