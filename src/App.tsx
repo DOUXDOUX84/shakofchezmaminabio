@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import Index from "./pages/Index";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
+import { toast } from "sonner";
 
 const queryClient = new QueryClient();
 
@@ -18,26 +19,39 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const checkAdmin = async () => {
       try {
+        setLoading(true);
         const { data: { session } } = await supabase.auth.getSession();
+        
         if (!session) {
+          console.log("No session found, redirecting to login");
           setIsAdmin(false);
           return;
         }
-        
+
+        console.log("Checking admin status for user:", session.user.id);
         const { data: roles, error } = await supabase
           .from('user_roles')
           .select('role')
           .eq('user_id', session.user.id)
           .maybeSingle();
-        
+
         if (error) {
           console.error('Error fetching user role:', error);
+          toast.error("Erreur lors de la vérification des droits d'accès");
           setIsAdmin(false);
+          return;
+        }
+
+        console.log("User roles:", roles);
+        if (roles?.role === 'admin') {
+          setIsAdmin(true);
         } else {
-          setIsAdmin(roles?.role === 'admin');
+          toast.error("Vous n'avez pas les droits d'accès administrateur");
+          setIsAdmin(false);
         }
       } catch (error) {
         console.error('Error in checkAdmin:', error);
+        toast.error("Une erreur est survenue lors de la vérification de vos droits");
         setIsAdmin(false);
       } finally {
         setLoading(false);
@@ -47,27 +61,40 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     checkAdmin();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log("Auth state changed:", event, session);
+      
       if (!session) {
+        console.log("No session in auth state change");
         setIsAdmin(false);
         setLoading(false);
         return;
       }
 
       try {
+        console.log("Checking admin status on auth change for user:", session.user.id);
         const { data: roles, error } = await supabase
           .from('user_roles')
           .select('role')
           .eq('user_id', session.user.id)
           .maybeSingle();
-        
+
         if (error) {
           console.error('Error fetching user role:', error);
+          toast.error("Erreur lors de la vérification des droits d'accès");
           setIsAdmin(false);
+          return;
+        }
+
+        console.log("User roles on auth change:", roles);
+        if (roles?.role === 'admin') {
+          setIsAdmin(true);
         } else {
-          setIsAdmin(roles?.role === 'admin');
+          toast.error("Vous n'avez pas les droits d'accès administrateur");
+          setIsAdmin(false);
         }
       } catch (error) {
         console.error('Error in auth state change:', error);
+        toast.error("Une erreur est survenue lors de la vérification de vos droits");
         setIsAdmin(false);
       } finally {
         setLoading(false);
@@ -86,6 +113,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
 
   if (!isAdmin) {
+    console.log("User is not admin, redirecting to login");
     return <Navigate to="/login" replace />;
   }
 
