@@ -17,24 +17,19 @@ export const ImageCarousel = () => {
   const images = [
     {
       src: siteImages.productBenefits,
-      alt: "Avantages du Shake Off Phyto Fiber",
-      title: "Avantages et Composants"
+      alt: "Avantages du Shake Off Phyto Fiber"
     },
     {
       src: siteImages.productFeatures,
-      alt: "Caractéristiques du Shake Off Phyto Fiber",
-      title: "Caractéristiques Principales",
-      titlePosition: "bottom-right"
+      alt: "Caractéristiques du Shake Off Phyto Fiber"
     },
     {
       src: siteImages.productInfo1,
-      alt: "Informations détaillées 1",
-      title: "Guide d'Utilisation"
+      alt: "Informations détaillées 1"
     },
     {
       src: siteImages.productInfo2,
-      alt: "Informations détaillées 2",
-      title: "Bienfaits pour la Santé"
+      alt: "Informations détaillées 2"
     }
   ];
 
