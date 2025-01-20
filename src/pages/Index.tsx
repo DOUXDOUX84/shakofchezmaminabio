@@ -16,7 +16,7 @@ const Index = () => {
       <IngredientsSection />
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col items-center gap-8">
             <OrderSection />
             <ContactButton />
           </div>
