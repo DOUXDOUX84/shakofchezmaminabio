@@ -11,6 +11,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [showResetPassword, setShowResetPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -33,6 +34,7 @@ const Login = () => {
     checkUser();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log("Auth state changed:", event, session);
       if (event === 'SIGNED_IN') {
         if (session) {
           const { data: roles } = await supabase
@@ -41,10 +43,13 @@ const Login = () => {
             .eq('user_id', session.user.id)
             .single();
 
+          console.log("User roles:", roles);
+
           if (roles?.role === 'admin') {
             navigate('/admin');
           } else {
-            navigate('/');
+            setErrorMessage("Vous n'avez pas les droits d'accès administrateur.");
+            await supabase.auth.signOut();
           }
         }
       }
@@ -53,6 +58,48 @@ const Login = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
+  const handleEmailSignIn = async (email: string, password: string) => {
+    try {
+      setIsLoading(true);
+      setErrorMessage("");
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        console.error("Sign in error:", error);
+        setErrorMessage(getErrorMessage(error));
+        return;
+      }
+
+      if (!data.user) {
+        setErrorMessage("Une erreur est survenue lors de la connexion.");
+        return;
+      }
+
+      const { data: roles } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', data.user.id)
+        .single();
+
+      if (roles?.role !== 'admin') {
+        setErrorMessage("Vous n'avez pas les droits d'accès administrateur.");
+        await supabase.auth.signOut();
+        return;
+      }
+
+      navigate('/admin');
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      setErrorMessage("Une erreur inattendue est survenue.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const getErrorMessage = (error: AuthError) => {
     switch (error.message) {
       case 'Invalid login credentials':
@@ -60,20 +107,26 @@ const Login = () => {
       case 'Email not confirmed':
         return 'Veuillez vérifier votre adresse email avant de vous connecter.';
       case 'User already registered':
-        return 'Cette adresse email est déjà utilisée. Veuillez vous connecter ou utiliser une autre adresse email.';
+        return 'Cette adresse email est déjà utilisée.';
       default:
-        return error.message;
+        return 'Une erreur est survenue lors de la connexion.';
     }
   };
 
-  const handleResetPassword = async () => {
-    const { error } = await supabase.auth.resetPasswordForEmail('', {
-      redirectTo: window.location.origin + '/login',
-    });
-    if (error) {
-      setErrorMessage(error.message);
-    } else {
-      setErrorMessage("Si un compte existe avec cet email, vous recevrez un lien de réinitialisation.");
+  const handleResetPassword = async (email: string) => {
+    try {
+      setIsLoading(true);
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/login',
+      });
+      
+      if (error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("Si un compte existe avec cet email, vous recevrez un lien de réinitialisation.");
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -102,15 +155,17 @@ const Login = () => {
               />
               <div className="flex space-x-2">
                 <Button 
-                  onClick={handleResetPassword}
+                  onClick={() => handleResetPassword(document.querySelector('input[type="email"]')?.value || '')}
                   className="w-full bg-green-600 hover:bg-green-700"
+                  disabled={isLoading}
                 >
-                  Envoyer le lien
+                  {isLoading ? 'Envoi en cours...' : 'Envoyer le lien'}
                 </Button>
                 <Button 
                   onClick={() => setShowResetPassword(false)}
                   variant="outline"
                   className="w-full"
+                  disabled={isLoading}
                 >
                   Retour
                 </Button>
@@ -118,60 +173,50 @@ const Login = () => {
             </div>
           </div>
         ) : (
-          <>
-            <Auth
-              supabaseClient={supabase}
-              appearance={{
-                theme: ThemeSupa,
-                variables: {
-                  default: {
-                    colors: {
-                      brand: '#16a34a',
-                      brandAccent: '#15803d',
-                    }
+          <Auth
+            supabaseClient={supabase}
+            appearance={{
+              theme: ThemeSupa,
+              variables: {
+                default: {
+                  colors: {
+                    brand: '#16a34a',
+                    brandAccent: '#15803d',
                   }
                 }
-              }}
-              localization={{
-                variables: {
-                  sign_in: {
-                    email_label: 'Adresse email',
-                    password_label: 'Mot de passe',
-                    button_label: 'Se connecter',
-                    loading_button_label: 'Connexion en cours...',
-                  },
-                  sign_up: {
-                    email_label: 'Adresse email',
-                    password_label: 'Mot de passe',
-                    button_label: 'Créer un compte',
-                    loading_button_label: 'Création en cours...',
-                    link_text: 'Pas encore de compte ? Inscrivez-vous',
-                  }
+              }
+            }}
+            localization={{
+              variables: {
+                sign_in: {
+                  email_label: 'Adresse email',
+                  password_label: 'Mot de passe',
+                  button_label: 'Se connecter',
+                  loading_button_label: 'Connexion en cours...',
+                },
+                sign_up: {
+                  email_label: 'Adresse email',
+                  password_label: 'Mot de passe',
+                  button_label: 'Créer un compte',
+                  loading_button_label: 'Création en cours...',
+                  link_text: '',
                 }
-              }}
-              providers={[]}
-              magicLink={false}
-              appearance={{
-                theme: ThemeSupa,
-                variables: {
-                  default: {
-                    colors: {
-                      brand: '#16a34a',
-                      brandAccent: '#15803d',
-                    }
-                  }
-                }
-              }}
-            />
-            <Button
-              onClick={() => setShowResetPassword(true)}
-              variant="link"
-              className="w-full mt-4 text-green-600 hover:text-green-700"
-            >
-              Mot de passe oublié ?
-            </Button>
-          </>
+              }
+            }}
+            providers={[]}
+            magicLink={false}
+            onlyThirdPartyProviders={false}
+            view="sign_in"
+          />
         )}
+        <Button
+          onClick={() => setShowResetPassword(true)}
+          variant="link"
+          className="w-full mt-4 text-green-600 hover:text-green-700"
+          disabled={isLoading}
+        >
+          Mot de passe oublié ?
+        </Button>
       </div>
     </div>
   );
