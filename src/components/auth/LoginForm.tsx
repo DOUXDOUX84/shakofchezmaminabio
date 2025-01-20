@@ -13,8 +13,19 @@ export const LoginForm = () => {
             colors: {
               brand: '#16a34a',
               brandAccent: '#15803d',
-            }
+            },
+            borderWidths: {
+              buttonBorderWidth: '0px',
+            },
+            radii: {
+              borderRadiusButton: '6px',
+            },
           }
+        },
+        className: {
+          button: 'bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded transition-colors',
+          input: 'rounded-md border border-input px-3 py-2 text-sm',
+          label: 'text-sm font-medium text-gray-700',
         }
       }}
       localization={{
