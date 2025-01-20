@@ -4,11 +4,13 @@ import { KeyBenefitsSection } from "@/components/sections/KeyBenefitsSection";
 import { IngredientsSection } from "@/components/sections/IngredientsSection";
 import { OrderSection } from "@/components/sections/OrderSection";
 import { ContactButton } from "@/components/ContactButton";
+import { ImageCarousel } from "@/components/sections/ImageCarousel";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
       <HeroSection />
+      <ImageCarousel />
       <BenefitsSection />
       <KeyBenefitsSection />
       <IngredientsSection />
