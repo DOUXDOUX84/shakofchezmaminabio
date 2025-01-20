@@ -18,6 +18,7 @@ const InternationalButton = ({
   >
     <div className="flex items-center gap-1">
       <Flag className="h-5 w-5" />
+      <span className="text-xl">{flags}</span>
     </div>
     <span className="text-sm sm:text-base">{countries}</span>
   </Button>
