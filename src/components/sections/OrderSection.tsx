@@ -28,7 +28,33 @@ const InternationalButton = ({
       ) : (
         <>
           <Flag className="h-5 w-5" />
-          <span className="text-xl">{flags}</span>
+          <span className="text-xl">
+            <img 
+              src="/lovable-uploads/c8d591d1-3674-4be3-a8a6-708390b0fa87.png" 
+              alt="UAE Flag"
+              className="inline-block h-6 w-8 object-cover rounded mr-1"
+            />
+            <img 
+              src="/lovable-uploads/75b25f08-5f37-4635-ab83-fe6cf84b06db.png" 
+              alt="South Africa Flag"
+              className="inline-block h-6 w-8 object-cover rounded mr-1"
+            />
+            <img 
+              src="/lovable-uploads/dc2949b5-04ab-441e-9a78-ab59d603a9d3.png" 
+              alt="Malaysia Flag"
+              className="inline-block h-6 w-8 object-cover rounded mr-1"
+            />
+            <img 
+              src="/lovable-uploads/00e2f476-fa73-4309-85b6-e351f3045ac0.png" 
+              alt="Ghana Flag"
+              className="inline-block h-6 w-8 object-cover rounded mr-1"
+            />
+            <img 
+              src="/lovable-uploads/9a6ef139-a761-4b9a-ba17-4f748b969e90.png" 
+              alt="Tanzania Flag"
+              className="inline-block h-6 w-8 object-cover rounded"
+            />
+          </span>
         </>
       )}
     </div>
