@@ -23,7 +23,8 @@ export const ImageCarousel = () => {
     {
       src: siteImages.productFeatures,
       alt: "Caractéristiques du Shake Off Phyto Fiber",
-      title: "Caractéristiques Principales"
+      title: "Caractéristiques Principales",
+      titlePosition: "right" // Ajout d'une propriété pour positionner le titre
     },
     {
       src: siteImages.productInfo1,
@@ -63,7 +64,10 @@ export const ImageCarousel = () => {
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                <div className={cn(
+                  "absolute bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4",
+                  image.titlePosition === "right" ? "right-0 text-right w-1/3" : "left-0 right-0"
+                )}>
                   <h3 className="text-white text-lg md:text-xl font-semibold">
                     {image.title}
                   </h3>
