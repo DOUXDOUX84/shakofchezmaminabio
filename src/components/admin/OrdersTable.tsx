@@ -18,6 +18,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { format } from "date-fns";
 
 const statusColors = {
   pending: "bg-yellow-500",
@@ -83,7 +84,7 @@ export const OrdersTable = () => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Date</TableHead>
+            <TableHead>Date et Heure (UTC)</TableHead>
             <TableHead>Nom</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Téléphone</TableHead>
@@ -97,7 +98,7 @@ export const OrdersTable = () => {
           {orders.map((order) => (
             <TableRow key={order.id}>
               <TableCell>
-                {new Date(order.created_at).toLocaleDateString()}
+                {format(new Date(order.created_at), "dd/MM/yyyy HH:mm")} UTC
               </TableCell>
               <TableCell>{order.full_name}</TableCell>
               <TableCell>{order.email}</TableCell>
