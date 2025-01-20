@@ -78,7 +78,7 @@ export const OrderSection = () => {
         href="https://referral.edmarker.com/SNFDK000142"
         countries="BUY IN UAE, SA, MY, GH, TZ"
         flags="🇦🇪 🇿🇦 🇲🇾 🇬🇭 🇹🇿"
-        className="hover:bg-gray-50 bg-[#8E9196] text-white hover:bg-[#8E9196]/90 border-[#8E9196]"
+        className="hover:bg-green-50 bg-green-600 text-white hover:bg-green-700 border-green-600"
       />
     </div>
   );
