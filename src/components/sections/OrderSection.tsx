@@ -15,7 +15,7 @@ const InternationalButton = ({
 }) => (
   <Button
     variant="outline"
-    className={`flex items-center gap-2 bg-white hover:bg-gray-50 border-2 border-gray-200 text-gray-800 font-semibold py-4 px-6 rounded-lg shadow-md hover:shadow-lg transform transition-all duration-300 hover:scale-105 ${className}`}
+    className={`flex items-center gap-2 bg-white hover:bg-gray-50 border-2 border-gray-200 text-gray-800 font-semibold py-4 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ${className}`}
     onClick={() => window.open(href, '_blank')}
   >
     <div className="flex items-center gap-1">
@@ -62,9 +62,7 @@ const InternationalButton = ({
 export const OrderSection = () => {
   return (
     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-      <Button 
-        className="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg transform transition-all duration-300 hover:scale-105 flex items-center gap-2"
-      >
+      <Button className="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg transform transition hover:scale-105 flex items-center gap-2">
         <ShoppingCart className="w-6 h-6" />
         Ajouter au panier
       </Button>
@@ -73,14 +71,14 @@ export const OrderSection = () => {
         href="https://edmarkusa.com/?referrer=SNFDK000142"
         countries="BUY IN USA"
         flags="🇺🇸"
-        className="hover:bg-blue-50 bg-[#0EA5E9] text-white hover:bg-[#0EA5E9]/90 border-[#0EA5E9] transform transition-all duration-300 hover:scale-105"
+        className="hover:bg-blue-50 bg-[#0EA5E9] text-white hover:bg-[#0EA5E9]/90 border-[#0EA5E9]"
       />
       
       <InternationalButton
         href="https://referral.edmarker.com/SNFDK000142"
         countries="BUY IN UAE, SA, MY, GH, TZ"
         flags="🇦🇪 🇿🇦 🇲🇾 🇬🇭 🇹🇿"
-        className="hover:bg-green-50 bg-green-600 text-white hover:bg-green-700 border-green-600 transform transition-all duration-300 hover:scale-105"
+        className="hover:bg-gray-50 bg-[#8E9196] text-white hover:bg-[#8E9196]/90 border-[#8E9196]"
       />
     </div>
   );
