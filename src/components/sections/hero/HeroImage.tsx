@@ -18,6 +18,10 @@ export const HeroImage = () => {
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5 }}
+        onError={(e) => {
+          const target = e.target as HTMLImageElement;
+          target.src = "/lovable-uploads/2b7c5bab-a39f-47dd-b13b-440ca97097ab.png";
+        }}
       />
     </motion.div>
   );
