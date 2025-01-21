@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { ShoppingCart } from "lucide-react";
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
@@ -111,7 +112,15 @@ export const CartForm = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg transform transition hover:scale-105">
+        <Button className="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg transform transition hover:scale-105 flex items-center gap-2">
+          <div className="flex items-center gap-2">
+            <img 
+              src="/lovable-uploads/4513dd0c-8630-424b-88ab-fec160829bba.png"
+              alt="Drapeau du Sénégal"
+              className="h-6 w-8 object-cover rounded"
+            />
+            <ShoppingCart className="h-5 w-5" />
+          </div>
           Ajouter au panier
         </Button>
       </SheetTrigger>
