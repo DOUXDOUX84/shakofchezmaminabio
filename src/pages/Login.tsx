@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import type { AuthError } from "@supabase/supabase-js";
 
 const Login = () => {
@@ -12,6 +13,7 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     const checkUser = async () => {
@@ -113,10 +115,10 @@ const Login = () => {
     }
   };
 
-  const handleResetPassword = async (email: string) => {
+  const handleResetPassword = async (emailInput: string) => {
     try {
       setIsLoading(true);
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      const { error } = await supabase.auth.resetPasswordForEmail(emailInput, {
         redirectTo: window.location.origin + '/login',
       });
       
@@ -147,15 +149,19 @@ const Login = () => {
               Entrez votre adresse email pour recevoir un lien de réinitialisation de mot de passe.
             </p>
             <div className="space-y-2">
-              <input
+              <Input
                 type="email"
                 placeholder="Votre adresse email"
-                className="w-full p-2 border rounded"
-                onChange={(e) => setErrorMessage("")}
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setErrorMessage("");
+                }}
+                className="w-full"
               />
               <div className="flex space-x-2">
                 <Button 
-                  onClick={() => handleResetPassword(document.querySelector('input[type="email"]')?.value || '')}
+                  onClick={() => handleResetPassword(email)}
                   className="w-full bg-green-600 hover:bg-green-700"
                   disabled={isLoading}
                 >
