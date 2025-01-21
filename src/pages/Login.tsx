@@ -20,11 +20,13 @@ const Login = () => {
         const { data: { session } } = await supabase.auth.getSession();
         
         if (session) {
+          console.log("Checking admin status for user:", session.user.id);
           const { data: roles, error } = await supabase
             .from('user_roles')
-            .select('role')
+            .select('*')
             .eq('user_id', session.user.id)
-            .single();
+            .eq('role', 'admin')
+            .maybeSingle();
 
           if (error) {
             console.error("Error fetching user role:", error);
@@ -35,7 +37,7 @@ const Login = () => {
 
           console.log("User roles:", roles);
 
-          if (roles?.role === 'admin') {
+          if (roles) {
             navigate('/admin');
           } else {
             setErrorMessage("Vous n'avez pas les droits d'accès administrateur.");
@@ -57,11 +59,13 @@ const Login = () => {
       if (event === 'SIGNED_IN' && session) {
         try {
           setIsLoading(true);
+          console.log("Checking admin status on auth change for user:", session.user.id);
           const { data: roles, error } = await supabase
             .from('user_roles')
-            .select('role')
+            .select('*')
             .eq('user_id', session.user.id)
-            .single();
+            .eq('role', 'admin')
+            .maybeSingle();
 
           if (error) {
             console.error("Error fetching user role:", error);
@@ -70,9 +74,9 @@ const Login = () => {
             return;
           }
 
-          console.log("User roles:", roles);
+          console.log("User roles on auth change:", roles);
 
-          if (roles?.role === 'admin') {
+          if (roles) {
             navigate('/admin');
           } else {
             setErrorMessage("Vous n'avez pas les droits d'accès administrateur.");
