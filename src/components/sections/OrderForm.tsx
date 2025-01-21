@@ -32,6 +32,7 @@ export const OrderForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const unitPrice = 25800;
 
   const onSubmit = async (data: OrderFormData) => {
+    console.log("Submitting form with data:", data); // Debugging log
     setIsSubmitting(true);
     try {
       const { error } = await supabase
@@ -53,6 +54,7 @@ export const OrderForm = ({ onSuccess }: { onSuccess: () => void }) => {
       
       onSuccess();
     } catch (error) {
+      console.error("Form submission error:", error); // Debugging log
       toast({
         variant: "destructive",
         title: "Erreur",
