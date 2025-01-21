@@ -195,7 +195,7 @@ export const CartForm = () => {
                   Paiement Wave disponible via QR code ou lien direct :
                 </p>
                 <img 
-                  src="/lovable-uploads/e10db5d5-86d1-4392-8cab-0d28340d317b.png" 
+                  src="/lovable-uploads/b0e17f14-65a1-40cc-8f03-015f6a69d1a3.png" 
                   alt="QR Code Wave"
                   className="w-32 h-32 mx-auto mb-2"
                 />
