@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import CookieConsent, { Cookies } from 'react-cookie-consent';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 
@@ -55,7 +55,12 @@ export const CookieConsentBanner = () => {
         declineButtonText="Paramètres"
         onAccept={handleAcceptAll}
         onDecline={() => setShowPreferences(true)}
-        style={{ background: '#2B373B' }}
+        style={{ 
+          background: '#2B373B',
+          zIndex: 40,
+          position: 'fixed',
+          bottom: 0
+        }}
         buttonStyle={{ 
           background: '#4CAF50',
           color: 'white',
@@ -71,6 +76,7 @@ export const CookieConsentBanner = () => {
           borderRadius: '3px',
           padding: '5px 20px'
         }}
+        containerClasses="cookie-consent-container"
       >
         <p className="text-sm">
           Nous utilisons des cookies pour améliorer votre expérience sur notre site. 
