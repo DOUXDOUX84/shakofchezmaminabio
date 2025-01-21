@@ -1,4 +1,5 @@
-import { FormControl, FormField, FormItem, FormLabel, RadioGroup, RadioGroupItem } from "@/components/ui/form";
+import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { UseFormReturn } from "react-hook-form";
 import * as z from "zod";
 
