@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import { motion } from "framer-motion";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
@@ -27,6 +28,8 @@ const WAVE_PAYMENT_LINK = "https://pay.wave.com/m/M_MO1NT4Bhh6eN/c/sn/";
 
 export const CartForm = () => {
   const [isOrderSummaryVisible, setIsOrderSummaryVisible] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,20 +47,64 @@ export const CartForm = () => {
   const totalPrice = quantity * PRICE_PER_BOX;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log("Commande soumise:", values);
-    
-    const paymentInstructions = values.paymentMethod === "orange" 
-      ? `Veuillez effectuer le paiement de ${totalPrice.toLocaleString()} FCFA via Orange Money au ${ORANGE_MONEY_NUMBER}`
-      : `Veuillez effectuer le paiement de ${totalPrice.toLocaleString()} FCFA via Wave en cliquant sur le lien de paiement ou en scannant le QR code.`;
+    try {
+      setIsSubmitting(true);
+      
+      // Enregistrer la commande dans Supabase
+      const { data: order, error } = await supabase
+        .from('orders')
+        .insert([
+          {
+            full_name: values.fullName,
+            email: values.email,
+            address: values.address,
+            phone: values.phone,
+            quantity: values.quantity,
+            payment_method: values.paymentMethod,
+            total_price: totalPrice,
+          }
+        ])
+        .select()
+        .single();
 
-    toast({
-      title: "Commande enregistrée !",
-      description: paymentInstructions,
-      duration: 10000,
-    });
+      if (error) {
+        console.error('Erreur lors de l\'enregistrement de la commande:', error);
+        toast({
+          title: "Erreur",
+          description: "Une erreur est survenue lors de l'enregistrement de votre commande. Veuillez réessayer.",
+          variant: "destructive",
+        });
+        return;
+      }
 
-    if (values.paymentMethod === "wave") {
-      window.open(WAVE_PAYMENT_LINK, '_blank');
+      console.log('Commande enregistrée:', order);
+      
+      const paymentInstructions = values.paymentMethod === "orange" 
+        ? `Veuillez effectuer le paiement de ${totalPrice.toLocaleString()} FCFA via Orange Money au ${ORANGE_MONEY_NUMBER}`
+        : `Veuillez effectuer le paiement de ${totalPrice.toLocaleString()} FCFA via Wave en cliquant sur le lien de paiement ou en scannant le QR code.`;
+
+      toast({
+        title: "Commande enregistrée !",
+        description: paymentInstructions,
+        duration: 10000,
+      });
+
+      if (values.paymentMethod === "wave") {
+        window.open(WAVE_PAYMENT_LINK, '_blank');
+      }
+
+      // Réinitialiser le formulaire
+      form.reset();
+      
+    } catch (error) {
+      console.error('Erreur inattendue:', error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur inattendue est survenue. Veuillez réessayer.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -233,8 +280,9 @@ export const CartForm = () => {
             <Button 
               type="submit" 
               className="w-full bg-green-600 hover:bg-green-700 text-white"
+              disabled={isSubmitting}
             >
-              Procéder au paiement
+              {isSubmitting ? "Traitement en cours..." : "Procéder au paiement"}
             </Button>
           </form>
         </Form>
