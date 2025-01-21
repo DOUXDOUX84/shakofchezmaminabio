@@ -162,12 +162,12 @@ export const OrderForm = ({ onSuccess }: { onSuccess: () => void }) => {
             <p className="text-sm text-blue-800">Paiement Wave disponible via QR code ou lien direct :</p>
             <div className="flex flex-col items-center space-y-3">
               <img 
-                src="/lovable-uploads/df75bfe4-318a-453e-92ed-8d3545c5073e.png" 
+                src="/lovable-uploads/d7272e63-3e15-4089-9430-73d262e04a51.png" 
                 alt="QR Code Wave"
-                className="w-32 h-32"
+                className="w-48 h-48"
               />
               <a 
-                href="#" 
+                href="https://pay.wave.com/m/M_MO1NT4Bhh6eN/c/sn/" 
                 className="text-blue-600 hover:text-blue-800 text-sm underline"
                 target="_blank"
                 rel="noopener noreferrer"
