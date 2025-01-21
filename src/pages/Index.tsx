@@ -5,6 +5,7 @@ import { IngredientsSection } from "@/components/sections/IngredientsSection";
 import { OrderSection } from "@/components/sections/OrderSection";
 import { ContactButton } from "@/components/ContactButton";
 import { ImageCarousel } from "@/components/sections/ImageCarousel";
+import { CookieConsent } from "@/components/CookieConsent";
 
 const Index = () => {
   return (
@@ -22,6 +23,7 @@ const Index = () => {
           </div>
         </div>
       </section>
+      <CookieConsent />
     </div>
   );
 };
