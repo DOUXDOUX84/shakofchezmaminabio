@@ -1,8 +1,11 @@
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 export const LoginForm = () => {
+  const { toast } = useToast();
+
   return (
     <Auth
       supabaseClient={supabase}
@@ -35,6 +38,8 @@ export const LoginForm = () => {
             password_label: 'Mot de passe',
             button_label: 'Se connecter',
             loading_button_label: 'Connexion en cours...',
+            email_input_placeholder: 'Votre adresse email',
+            password_input_placeholder: 'Votre mot de passe',
           },
           sign_up: {
             email_label: 'Adresse email',
@@ -42,6 +47,8 @@ export const LoginForm = () => {
             button_label: 'Créer un compte',
             loading_button_label: 'Création en cours...',
             link_text: '',
+            email_input_placeholder: 'Votre adresse email',
+            password_input_placeholder: 'Choisissez un mot de passe',
           }
         }
       }}
@@ -49,6 +56,22 @@ export const LoginForm = () => {
       magicLink={false}
       onlyThirdPartyProviders={false}
       view="sign_in"
+      onError={(error) => {
+        console.error("Auth error:", error);
+        if (error.message === "Invalid login credentials") {
+          toast({
+            title: "Erreur de connexion",
+            description: "Email ou mot de passe incorrect",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Erreur",
+            description: "Une erreur est survenue lors de la connexion",
+            variant: "destructive",
+          });
+        }
+      }}
     />
   );
 };
