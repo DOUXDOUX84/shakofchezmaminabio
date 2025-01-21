@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { OrderForm } from "./OrderForm";
+import { OrderForm } from "@/components/sections/OrderForm";
 
 export const CartForm = () => {
   const [isOpen, setIsOpen] = useState(false);
