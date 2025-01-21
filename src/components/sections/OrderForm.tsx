@@ -158,13 +158,13 @@ export const OrderForm = ({ onSuccess }: { onSuccess: () => void }) => {
         </div>
 
         {paymentMethod === "wave" && (
-          <div className="bg-blue-50 p-4 rounded-lg space-y-3">
-            <p className="text-sm text-blue-800">Paiement Wave disponible via QR code ou lien direct :</p>
-            <div className="flex flex-col items-center space-y-3">
+          <div className="bg-blue-50 p-4 rounded-lg">
+            <p className="text-sm text-blue-800 mb-4">Paiement Wave disponible via QR code ou lien direct :</p>
+            <div className="flex flex-col items-center">
               <img 
                 src="/lovable-uploads/d7272e63-3e15-4089-9430-73d262e04a51.png" 
                 alt="QR Code Wave"
-                className="w-48 h-48"
+                className="w-48 h-48 mb-4"
               />
               <a 
                 href="https://pay.wave.com/m/M_MO1NT4Bhh6eN/c/sn/" 
@@ -178,19 +178,21 @@ export const OrderForm = ({ onSuccess }: { onSuccess: () => void }) => {
           </div>
         )}
 
-        <div className="bg-green-50 p-4 rounded-lg space-y-2">
-          <h3 className="font-medium text-green-800">Récapitulatif de la commande</h3>
-          <div className="flex justify-between text-sm">
-            <span>Prix unitaire:</span>
-            <span>{unitPrice.toLocaleString()} FCFA</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span>Quantité:</span>
-            <span>{quantity} boîte(s)</span>
-          </div>
-          <div className="flex justify-between font-medium text-green-800">
-            <span>Total:</span>
-            <span>{totalPrice.toLocaleString()} FCFA</span>
+        <div className="bg-green-50 p-4 rounded-lg">
+          <h3 className="font-medium text-green-800 mb-2">Récapitulatif de la commande</h3>
+          <div className="space-y-2 text-sm">
+            <div className="flex justify-between">
+              <span>Prix unitaire:</span>
+              <span>{unitPrice.toLocaleString()} FCFA</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Quantité:</span>
+              <span>{quantity} boîte(s)</span>
+            </div>
+            <div className="flex justify-between font-medium text-green-800 mt-2 pt-2 border-t border-green-200">
+              <span>Total:</span>
+              <span>{totalPrice.toLocaleString()} FCFA</span>
+            </div>
           </div>
         </div>
       </div>
