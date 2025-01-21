@@ -15,28 +15,38 @@ const Login = () => {
 
   useEffect(() => {
     const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        const { data: roles, error } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .single();
+      try {
+        setIsLoading(true);
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session) {
+          const { data: roles, error } = await supabase
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', session.user.id)
+            .single();
 
-        if (error) {
-          console.error("Error fetching user role:", error);
-          setErrorMessage("Erreur lors de la vérification des droits d'accès.");
-          return;
+          if (error) {
+            console.error("Error fetching user role:", error);
+            setErrorMessage("Erreur lors de la vérification des droits d'accès.");
+            await supabase.auth.signOut();
+            return;
+          }
+
+          console.log("User roles:", roles);
+
+          if (roles?.role === 'admin') {
+            navigate('/admin');
+          } else {
+            setErrorMessage("Vous n'avez pas les droits d'accès administrateur.");
+            await supabase.auth.signOut();
+          }
         }
-
-        console.log("User roles:", roles);
-
-        if (roles?.role === 'admin') {
-          navigate('/admin');
-        } else {
-          setErrorMessage("Vous n'avez pas les droits d'accès administrateur.");
-          await supabase.auth.signOut();
-        }
+      } catch (error) {
+        console.error("Error checking user:", error);
+        setErrorMessage("Une erreur est survenue lors de la vérification de vos droits.");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -45,25 +55,34 @@ const Login = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session);
       if (event === 'SIGNED_IN' && session) {
-        const { data: roles, error } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', session.user.id)
-          .single();
+        try {
+          setIsLoading(true);
+          const { data: roles, error } = await supabase
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', session.user.id)
+            .single();
 
-        if (error) {
-          console.error("Error fetching user role:", error);
-          setErrorMessage("Erreur lors de la vérification des droits d'accès.");
-          return;
-        }
+          if (error) {
+            console.error("Error fetching user role:", error);
+            setErrorMessage("Erreur lors de la vérification des droits d'accès.");
+            await supabase.auth.signOut();
+            return;
+          }
 
-        console.log("User roles:", roles);
+          console.log("User roles:", roles);
 
-        if (roles?.role === 'admin') {
-          navigate('/admin');
-        } else {
-          setErrorMessage("Vous n'avez pas les droits d'accès administrateur.");
-          await supabase.auth.signOut();
+          if (roles?.role === 'admin') {
+            navigate('/admin');
+          } else {
+            setErrorMessage("Vous n'avez pas les droits d'accès administrateur.");
+            await supabase.auth.signOut();
+          }
+        } catch (error) {
+          console.error("Error during auth state change:", error);
+          setErrorMessage("Une erreur est survenue lors de la vérification de vos droits.");
+        } finally {
+          setIsLoading(false);
         }
       }
     });
