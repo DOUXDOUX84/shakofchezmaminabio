@@ -20,17 +20,11 @@ export const useImages = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        console.log('Fetching images from Supabase...');
         const { data, error: fetchError } = await supabase
           .from('images')
-          .select('*');
+          .select('*') as { data: ImagesTable[] | null, error: Error | null };
 
-        console.log('Supabase response:', { data, error: fetchError });
-
-        if (fetchError) {
-          console.error('Supabase error:', fetchError);
-          throw fetchError;
-        }
+        if (fetchError) throw fetchError;
 
         const imageMap = (data || []).reduce<Record<string, SiteImage>>((acc, img) => ({
           ...acc,
@@ -48,8 +42,6 @@ export const useImages = () => {
       } catch (err) {
         console.error('Error fetching images:', err);
         setError('Failed to load images');
-        // En cas d'erreur, utiliser les images de secours
-        setImages({});
       } finally {
         setLoading(false);
       }

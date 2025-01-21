@@ -34,7 +34,7 @@ export const ContactButton = () => {
       <DialogTrigger asChild>
         <Button 
           variant="outline" 
-          className="bg-[#0EA5E9] hover:bg-[#0EA5E9]/90 text-white border-[#0EA5E9] shadow-lg transform transition-all duration-300 hover:scale-105 font-semibold px-6 py-4 rounded-lg text-lg"
+          className="bg-[#9b87f5] hover:bg-[#8B5CF6] text-white border-none shadow-lg hover:shadow-xl transition-all duration-300 font-semibold px-6 py-4 rounded-lg text-lg"
         >
           <Phone className="h-4 w-4 mr-2" />
           Nous contacter
@@ -42,12 +42,12 @@ export const ContactButton = () => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold text-[#0EA5E9]">Contactez-nous</DialogTitle>
+          <DialogTitle className="text-xl font-semibold text-[#7E69AB]">Contactez-nous</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-4 py-4">
           <Button
             variant="outline"
-            className="justify-start gap-2 hover:bg-[#F1F0FB] hover:text-[#0EA5E9] transition-all duration-300 transform hover:scale-105"
+            className="justify-start gap-2 hover:bg-[#F1F0FB] hover:text-[#7E69AB] transition-colors"
             onClick={() => window.location.href = `tel:${phoneNumber}`}
           >
             <Phone className="h-4 w-4" />
@@ -55,7 +55,7 @@ export const ContactButton = () => {
           </Button>
           <Button
             variant="outline"
-            className="justify-start gap-2 hover:bg-[#F1F0FB] hover:text-[#0EA5E9] transition-all duration-300 transform hover:scale-105"
+            className="justify-start gap-2 hover:bg-[#F1F0FB] hover:text-[#7E69AB] transition-colors"
             onClick={() => window.open(whatsappLink, '_blank')}
           >
             <MessageCircle className="h-4 w-4" />
