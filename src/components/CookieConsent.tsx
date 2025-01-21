@@ -60,7 +60,7 @@ export const CookieConsentBanner = () => {
           zIndex: 10,
           position: 'fixed',
           bottom: 0,
-          padding: '8px 16px',
+          padding: '6px 12px',
           width: '100%',
           left: 0,
           minHeight: 'auto',
@@ -68,39 +68,43 @@ export const CookieConsentBanner = () => {
           alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
-          gap: '10px'
+          gap: '8px',
+          fontSize: '12px'
         }}
         buttonStyle={{ 
           background: '#4CAF50',
           color: 'white',
-          fontSize: '13px',
+          fontSize: '12px',
           borderRadius: '3px',
-          padding: '5px 20px',
-          margin: '0 5px'
+          padding: '4px 12px',
+          margin: '0 4px',
+          whiteSpace: 'nowrap'
         }}
         declineButtonStyle={{
           background: 'transparent',
           border: '1px solid white',
           color: 'white',
-          fontSize: '13px',
+          fontSize: '12px',
           borderRadius: '3px',
-          padding: '5px 20px',
-          margin: '0 5px'
+          padding: '4px 12px',
+          margin: '0 4px',
+          whiteSpace: 'nowrap'
         }}
         containerClasses="cookie-consent-container"
         contentStyle={{
           flex: '1',
           margin: '0',
-          padding: '0'
+          padding: '0',
+          fontSize: '12px',
+          lineHeight: '1.3'
         }}
       >
-        <p className="text-sm m-0">
+        <p className="text-xs m-0">
           Nous utilisons des cookies pour améliorer votre expérience sur notre site. 
           Les cookies essentiels sont nécessaires au bon fonctionnement du site. 
-          Vous pouvez gérer vos préférences pour les autres catégories de cookies.{' '}
           <a 
             href="/privacy-policy" 
-            className="text-blue-400 hover:text-blue-300 underline"
+            className="text-blue-400 hover:text-blue-300 underline ml-1"
             target="_blank"
             rel="noopener noreferrer"
           >
