@@ -24,7 +24,6 @@ export const PaymentMethodSection: React.FC<PaymentMethodSectionProps> = ({
           defaultValue="orange_money"
           className="space-y-3"
           {...register("payment_method")}
-          value={paymentMethod}
         >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="orange_money" id="orange_money" />
