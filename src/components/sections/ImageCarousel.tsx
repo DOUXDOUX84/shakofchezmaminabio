@@ -2,6 +2,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { useImageUrls } from "@/config/images";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export const ImageCarousel = () => {
   const { siteImages, loading } = useImageUrls();
@@ -64,17 +65,23 @@ export const ImageCarousel = () => {
           ))}
         </CarouselContent>
         <CarouselPrevious className={cn(
-          "absolute -left-12 top-1/2 -translate-y-1/2",
-          "bg-white/80 hover:bg-green-500 hover:text-white transition-all duration-300",
-          "hidden md:flex",
+          "absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2",
+          "bg-white/90 hover:bg-green-500 hover:text-white transition-all duration-300",
+          "flex h-12 w-12 items-center justify-center rounded-full",
+          "border-2 border-green-500/20 shadow-lg",
           "transform hover:scale-110"
-        )} />
+        )}>
+          <ArrowLeft className="h-6 w-6" />
+        </CarouselPrevious>
         <CarouselNext className={cn(
-          "absolute -right-12 top-1/2 -translate-y-1/2",
-          "bg-white/80 hover:bg-green-500 hover:text-white transition-all duration-300",
-          "hidden md:flex",
+          "absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2",
+          "bg-white/90 hover:bg-green-500 hover:text-white transition-all duration-300",
+          "flex h-12 w-12 items-center justify-center rounded-full",
+          "border-2 border-green-500/20 shadow-lg",
           "transform hover:scale-110"
-        )} />
+        )}>
+          <ArrowRight className="h-6 w-6" />
+        </CarouselNext>
       </Carousel>
     </div>
   );
