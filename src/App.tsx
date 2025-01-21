@@ -31,8 +31,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
         console.log("Checking admin status for user:", session.user.id);
         const { data: roles, error } = await supabase
           .from('user_roles')
-          .select('role')
+          .select('*')
           .eq('user_id', session.user.id)
+          .eq('role', 'admin')
           .maybeSingle();
 
         if (error) {
@@ -43,7 +44,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
         }
 
         console.log("User roles:", roles);
-        if (roles?.role === 'admin') {
+        if (roles) {
           setIsAdmin(true);
         } else {
           toast.error("Vous n'avez pas les droits d'accès administrateur");
@@ -74,8 +75,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
         console.log("Checking admin status on auth change for user:", session.user.id);
         const { data: roles, error } = await supabase
           .from('user_roles')
-          .select('role')
+          .select('*')
           .eq('user_id', session.user.id)
+          .eq('role', 'admin')
           .maybeSingle();
 
         if (error) {
@@ -86,7 +88,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
         }
 
         console.log("User roles on auth change:", roles);
-        if (roles?.role === 'admin') {
+        if (roles) {
           setIsAdmin(true);
         } else {
           toast.error("Vous n'avez pas les droits d'accès administrateur");
