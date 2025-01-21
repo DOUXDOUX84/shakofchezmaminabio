@@ -17,16 +17,25 @@ const Login = () => {
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        const { data: roles } = await supabase
+        const { data: roles, error } = await supabase
           .from('user_roles')
           .select('role')
           .eq('user_id', session.user.id)
           .single();
 
+        if (error) {
+          console.error("Error fetching user role:", error);
+          setErrorMessage("Erreur lors de la vérification des droits d'accès.");
+          return;
+        }
+
+        console.log("User roles:", roles);
+
         if (roles?.role === 'admin') {
           navigate('/admin');
         } else {
-          navigate('/');
+          setErrorMessage("Vous n'avez pas les droits d'accès administrateur.");
+          await supabase.auth.signOut();
         }
       }
     };
@@ -35,22 +44,26 @@ const Login = () => {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session);
-      if (event === 'SIGNED_IN') {
-        if (session) {
-          const { data: roles } = await supabase
-            .from('user_roles')
-            .select('role')
-            .eq('user_id', session.user.id)
-            .single();
+      if (event === 'SIGNED_IN' && session) {
+        const { data: roles, error } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id)
+          .single();
 
-          console.log("User roles:", roles);
+        if (error) {
+          console.error("Error fetching user role:", error);
+          setErrorMessage("Erreur lors de la vérification des droits d'accès.");
+          return;
+        }
 
-          if (roles?.role === 'admin') {
-            navigate('/admin');
-          } else {
-            setErrorMessage("Vous n'avez pas les droits d'accès administrateur.");
-            await supabase.auth.signOut();
-          }
+        console.log("User roles:", roles);
+
+        if (roles?.role === 'admin') {
+          navigate('/admin');
+        } else {
+          setErrorMessage("Vous n'avez pas les droits d'accès administrateur.");
+          await supabase.auth.signOut();
         }
       }
     });
