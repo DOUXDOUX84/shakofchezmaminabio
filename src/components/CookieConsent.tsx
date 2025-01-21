@@ -60,17 +60,23 @@ export const CookieConsentBanner = () => {
           zIndex: 10,
           position: 'fixed',
           bottom: 0,
-          paddingBottom: '20px',
-          marginBottom: '0px',
+          padding: '8px 16px',
           width: '100%',
-          left: 0
+          left: 0,
+          minHeight: 'auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '10px'
         }}
         buttonStyle={{ 
           background: '#4CAF50',
           color: 'white',
           fontSize: '13px',
           borderRadius: '3px',
-          padding: '5px 20px'
+          padding: '5px 20px',
+          margin: '0 5px'
         }}
         declineButtonStyle={{
           background: 'transparent',
@@ -78,15 +84,17 @@ export const CookieConsentBanner = () => {
           color: 'white',
           fontSize: '13px',
           borderRadius: '3px',
-          padding: '5px 20px'
+          padding: '5px 20px',
+          margin: '0 5px'
         }}
         containerClasses="cookie-consent-container"
         contentStyle={{
-          margin: '10px',
-          padding: '10px'
+          flex: '1',
+          margin: '0',
+          padding: '0'
         }}
       >
-        <p className="text-sm">
+        <p className="text-sm m-0">
           Nous utilisons des cookies pour améliorer votre expérience sur notre site. 
           Les cookies essentiels sont nécessaires au bon fonctionnement du site. 
           Vous pouvez gérer vos préférences pour les autres catégories de cookies.{' '}
