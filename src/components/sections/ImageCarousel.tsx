@@ -17,23 +17,19 @@ export const ImageCarousel = () => {
   const images = [
     {
       src: siteImages.productBenefits,
-      alt: "Avantages du Shake Off Phyto Fiber",
-      title: "Avantages et Composants"
+      alt: "Avantages du Shake Off Phyto Fiber"
     },
     {
       src: siteImages.productFeatures,
-      alt: "Caractéristiques du Shake Off Phyto Fiber",
-      title: "Caractéristiques Principales"
+      alt: "Caractéristiques du Shake Off Phyto Fiber"
     },
     {
       src: siteImages.productInfo1,
-      alt: "Informations détaillées 1",
-      title: "Guide d'Utilisation"
+      alt: "Informations détaillées 1"
     },
     {
       src: siteImages.productInfo2,
-      alt: "Informations détaillées 2",
-      title: "Bienfaits pour la Santé"
+      alt: "Informations détaillées 2"
     }
   ];
 
@@ -63,7 +59,12 @@ export const ImageCarousel = () => {
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                <div className={cn(
+                  "absolute bg-gradient-to-t from-black/60 to-transparent p-4",
+                  image.titlePosition === "bottom-right" 
+                    ? "bottom-0 right-0 text-right w-1/2 md:w-1/3" 
+                    : "bottom-0 left-0 right-0"
+                )}>
                   <h3 className="text-white text-lg md:text-xl font-semibold">
                     {image.title}
                   </h3>
