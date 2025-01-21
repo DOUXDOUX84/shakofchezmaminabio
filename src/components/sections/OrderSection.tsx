@@ -45,13 +45,14 @@ export const OrderSection = () => {
         href="https://edmarkusa.com/?referrer=SNFDK000142"
         countries="BUY IN USA"
         flags="🇺🇸"
-        className="hover:bg-blue-50"
+        className="hover:bg-blue-50 bg-[#0EA5E9] text-white hover:bg-[#0EA5E9]/90 border-[#0EA5E9]"
       />
       
       <InternationalButton
         href="https://referral.edmarker.com/SNFDK000142"
         countries="BUY IN UAE, SA, MY, GH, TZ"
         flags="🇦🇪 🇿🇦 🇲🇾 🇬🇭 🇹🇿"
+        className="hover:bg-gray-50 bg-[#8E9196] text-white hover:bg-[#8E9196]/90 border-[#8E9196]"
       />
     </div>
   );
