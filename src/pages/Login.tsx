@@ -155,7 +155,10 @@ const Login = () => {
               />
               <div className="flex space-x-2">
                 <Button 
-                  onClick={() => handleResetPassword(document.querySelector('input[type="email"]')?.value || '')}
+                  onClick={() => {
+                    const emailInput = document.querySelector('input[type="email"]') as HTMLInputElement;
+                    handleResetPassword(emailInput?.value || '');
+                  }}
                   className="w-full bg-green-600 hover:bg-green-700"
                   disabled={isLoading}
                 >
