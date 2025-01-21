@@ -57,9 +57,13 @@ export const CookieConsentBanner = () => {
         onDecline={() => setShowPreferences(true)}
         style={{ 
           background: '#2B373B',
-          zIndex: 40,
+          zIndex: 10,
           position: 'fixed',
-          bottom: 0
+          bottom: 0,
+          paddingBottom: '20px',
+          marginBottom: '0px',
+          width: '100%',
+          left: 0
         }}
         buttonStyle={{ 
           background: '#4CAF50',
@@ -77,6 +81,10 @@ export const CookieConsentBanner = () => {
           padding: '5px 20px'
         }}
         containerClasses="cookie-consent-container"
+        contentStyle={{
+          margin: '10px',
+          padding: '10px'
+        }}
       >
         <p className="text-sm">
           Nous utilisons des cookies pour améliorer votre expérience sur notre site. 
