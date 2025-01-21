@@ -14,7 +14,7 @@ const InternationalButton = ({
 }) => (
   <Button
     variant="outline"
-    className={`flex items-center gap-2 bg-white hover:bg-gray-50 border-2 border-gray-200 text-gray-800 font-semibold py-4 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ${className}`}
+    className={`flex items-center gap-2 bg-white hover:bg-gray-50 border-2 border-gray-200 text-gray-800 font-semibold py-4 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 animate-fade-in ${className}`}
     onClick={() => window.open(href, '_blank')}
   >
     <div className="flex items-center gap-1">
