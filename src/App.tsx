@@ -19,19 +19,22 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const checkAdmin = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-          const { data: roles, error } = await supabase
-            .from('user_roles')
-            .select('role')
-            .eq('user_id', session.user.id)
-            .maybeSingle();
-          
-          if (error) {
-            console.error('Error fetching user role:', error);
-            setIsAdmin(false);
-          } else {
-            setIsAdmin(roles?.role === 'admin');
-          }
+        if (!session) {
+          setIsAdmin(false);
+          return;
+        }
+        
+        const { data: roles, error } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
+        
+        if (error) {
+          console.error('Error fetching user role:', error);
+          setIsAdmin(false);
+        } else {
+          setIsAdmin(roles?.role === 'admin');
         }
       } catch (error) {
         console.error('Error in checkAdmin:', error);
@@ -44,22 +47,24 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     checkAdmin();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!session) {
+        setIsAdmin(false);
+        setLoading(false);
+        return;
+      }
+
       try {
-        if (session) {
-          const { data: roles, error } = await supabase
-            .from('user_roles')
-            .select('role')
-            .eq('user_id', session.user.id)
-            .maybeSingle();
-          
-          if (error) {
-            console.error('Error fetching user role:', error);
-            setIsAdmin(false);
-          } else {
-            setIsAdmin(roles?.role === 'admin');
-          }
-        } else {
+        const { data: roles, error } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
+        
+        if (error) {
+          console.error('Error fetching user role:', error);
           setIsAdmin(false);
+        } else {
+          setIsAdmin(roles?.role === 'admin');
         }
       } catch (error) {
         console.error('Error in auth state change:', error);
@@ -81,7 +86,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
 
   if (!isAdmin) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return <>{children}</>;
@@ -95,6 +100,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/login" element={<Login />} />
           <Route
             path="/admin"
             element={
