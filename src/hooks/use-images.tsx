@@ -45,10 +45,10 @@ export const useImages = () => {
 
         setImages(imageMap);
         setError(null);
-      } catch (err) {
+      } catch (err: any) {
         console.error('Error fetching images:', err);
-        setError('Failed to load images');
-        // En cas d'erreur, utiliser les images de secours
+        setError(err.message || 'Failed to load images');
+        // In case of error, use empty object to prevent breaking the UI
         setImages({});
       } finally {
         setLoading(false);
