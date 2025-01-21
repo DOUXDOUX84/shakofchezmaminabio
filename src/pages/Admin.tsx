@@ -29,32 +29,44 @@ const Admin = () => {
   const { data: orders, isLoading, error } = useQuery({
     queryKey: ["orders"],
     queryFn: async () => {
+      console.log("Fetching orders...");
       const { data, error } = await supabase
         .from("orders")
         .select("*")
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching orders:", error);
+        throw error;
+      }
+
+      console.log("Orders fetched successfully:", data);
       return data;
     },
   });
 
   const updateOrderStatus = async (orderId: string, newStatus: string) => {
     try {
+      console.log(`Updating order ${orderId} status to ${newStatus}`);
       const { error } = await supabase
         .from("orders")
         .update({ status: newStatus })
         .eq("id", orderId);
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error updating order status:", error);
+        throw error;
+      }
+
       toast.success("Statut de la commande mis à jour");
     } catch (error) {
-      console.error("Erreur lors de la mise à jour du statut:", error);
+      console.error("Error in updateOrderStatus:", error);
       toast.error("Erreur lors de la mise à jour du statut");
     }
   };
 
   if (error) {
+    console.error("Error in Admin component:", error);
     return (
       <div className="container mx-auto py-10">
         <div className="text-red-500">
@@ -65,6 +77,7 @@ const Admin = () => {
   }
 
   if (isLoading) {
+    console.log("Loading orders...");
     return (
       <div className="container mx-auto py-10 flex items-center justify-center">
         <LoaderCircle className="h-8 w-8 animate-spin text-green-500" />
@@ -73,6 +86,7 @@ const Admin = () => {
   }
 
   if (!orders || orders.length === 0) {
+    console.log("No orders found");
     return (
       <div className="container mx-auto py-10">
         <h1 className="text-2xl font-bold mb-6">Gestion des Commandes</h1>
@@ -83,6 +97,7 @@ const Admin = () => {
     );
   }
 
+  console.log("Rendering orders table with data:", orders);
   return (
     <div className="container mx-auto py-10">
       <h1 className="text-2xl font-bold mb-6">Gestion des Commandes</h1>
