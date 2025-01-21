@@ -4,11 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import type { AuthError } from "@supabase/supabase-js";
 
 const Login = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
+  const [showResetPassword, setShowResetPassword] = useState(false);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -64,6 +66,17 @@ const Login = () => {
     }
   };
 
+  const handleResetPassword = async () => {
+    const { error } = await supabase.auth.resetPasswordForEmail('', {
+      redirectTo: window.location.origin + '/login',
+    });
+    if (error) {
+      setErrorMessage(error.message);
+    } else {
+      setErrorMessage("Si un compte existe avec cet email, vous recevrez un lien de réinitialisation.");
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-green-50 via-white to-yellow-50">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-xl">
@@ -75,31 +88,71 @@ const Login = () => {
             <AlertDescription>{errorMessage}</AlertDescription>
           </Alert>
         )}
-        <Auth
-          supabaseClient={supabase}
-          appearance={{
-            theme: ThemeSupa,
-            variables: {
-              default: {
-                colors: {
-                  brand: '#16a34a',
-                  brandAccent: '#15803d',
+        {showResetPassword ? (
+          <div className="space-y-4">
+            <p className="text-sm text-gray-600 mb-4">
+              Entrez votre adresse email pour recevoir un lien de réinitialisation de mot de passe.
+            </p>
+            <div className="space-y-2">
+              <input
+                type="email"
+                placeholder="Votre adresse email"
+                className="w-full p-2 border rounded"
+                onChange={(e) => setErrorMessage("")}
+              />
+              <div className="flex space-x-2">
+                <Button 
+                  onClick={handleResetPassword}
+                  className="w-full bg-green-600 hover:bg-green-700"
+                >
+                  Envoyer le lien
+                </Button>
+                <Button 
+                  onClick={() => setShowResetPassword(false)}
+                  variant="outline"
+                  className="w-full"
+                >
+                  Retour
+                </Button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            <Auth
+              supabaseClient={supabase}
+              appearance={{
+                theme: ThemeSupa,
+                variables: {
+                  default: {
+                    colors: {
+                      brand: '#16a34a',
+                      brandAccent: '#15803d',
+                    }
+                  }
                 }
-              }
-            }
-          }}
-          localization={{
-            variables: {
-              sign_in: {
-                email_label: 'Adresse email',
-                password_label: 'Mot de passe',
-                button_label: 'Se connecter',
-                loading_button_label: 'Connexion en cours...',
-              }
-            }
-          }}
-          providers={[]}
-        />
+              }}
+              localization={{
+                variables: {
+                  sign_in: {
+                    email_label: 'Adresse email',
+                    password_label: 'Mot de passe',
+                    button_label: 'Se connecter',
+                    loading_button_label: 'Connexion en cours...',
+                  }
+                }
+              }}
+              providers={[]}
+            />
+            <Button
+              onClick={() => setShowResetPassword(true)}
+              variant="link"
+              className="w-full mt-4 text-green-600 hover:text-green-700"
+            >
+              Mot de passe oublié ?
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );
