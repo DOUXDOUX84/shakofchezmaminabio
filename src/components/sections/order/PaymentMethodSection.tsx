@@ -1,19 +1,19 @@
 import React from 'react';
+import { useFormContext } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { WavePayment } from './WavePayment';
 
 interface PaymentMethodSectionProps {
-  paymentMethod: string;
-  register: any;
   errors: any;
 }
 
 export const PaymentMethodSection: React.FC<PaymentMethodSectionProps> = ({ 
-  paymentMethod, 
-  register, 
   errors 
 }) => {
+  const { register, watch } = useFormContext();
+  const paymentMethod = watch("payment_method");
+  
   console.log("Current payment method:", paymentMethod); // Debugging log
 
   return (
@@ -39,7 +39,7 @@ export const PaymentMethodSection: React.FC<PaymentMethodSectionProps> = ({
         )}
       </div>
       
-      {paymentMethod?.toLowerCase() === "wave" && <WavePayment />}
+      {paymentMethod === "wave" && <WavePayment />}
     </div>
   );
 };
