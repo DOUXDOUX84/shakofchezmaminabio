@@ -28,7 +28,7 @@ export const HeroSection = () => {
   }
 
   return (
-    <section className="relative min-h-[90vh] md:h-[90vh] flex items-center justify-center bg-gradient-to-b from-green-50 via-white to-yellow-50 overflow-hidden py-12 px-4 md:py-0 md:px-0">
+    <section className="relative pt-20 md:pt-24 min-h-screen flex items-center justify-center bg-gradient-to-b from-green-50 via-white to-yellow-50 overflow-hidden py-12 px-4">
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 to-yellow-500/5" />
       </div>
