@@ -14,6 +14,8 @@ export const PaymentMethodSection: React.FC<PaymentMethodSectionProps> = ({
   register, 
   errors 
 }) => {
+  console.log("Current payment method:", paymentMethod); // Debugging log
+
   return (
     <div className="space-y-3">
       <Label>Méthode de paiement</Label>
@@ -37,7 +39,7 @@ export const PaymentMethodSection: React.FC<PaymentMethodSectionProps> = ({
         )}
       </div>
       
-      {paymentMethod === "wave" && <WavePayment />}
+      {paymentMethod?.toLowerCase() === "wave" && <WavePayment />}
     </div>
   );
 };
