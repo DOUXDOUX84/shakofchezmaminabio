@@ -21,7 +21,7 @@ export const PaymentMethodSection: React.FC<PaymentMethodSectionProps> = ({
         <RadioGroup 
           defaultValue="orange_money"
           className="space-y-3"
-          {...register("payment_method", { required: "Ce champ est requis" })}
+          {...register("payment_method")}
         >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="orange_money" id="orange_money" />

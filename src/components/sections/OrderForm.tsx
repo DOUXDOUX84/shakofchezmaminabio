@@ -20,7 +20,12 @@ interface OrderFormData {
 export const OrderForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<OrderFormData>();
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<OrderFormData>({
+    defaultValues: {
+      payment_method: "orange_money",
+      quantity: 1
+    }
+  });
   
   const paymentMethod = watch("payment_method");
   const quantity = watch("quantity", 1);
