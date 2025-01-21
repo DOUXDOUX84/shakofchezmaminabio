@@ -150,7 +150,18 @@ const Login = () => {
                 }
               }}
               providers={[]}
-              view="sign_up"
+              magicLink={false}
+              appearance={{
+                theme: ThemeSupa,
+                variables: {
+                  default: {
+                    colors: {
+                      brand: '#16a34a',
+                      brandAccent: '#15803d',
+                    }
+                  }
+                }
+              }}
             />
             <Button
               onClick={() => setShowResetPassword(true)}
