@@ -44,19 +44,19 @@ export const ImageCarousel = () => {
       >
         <CarouselContent className="-ml-2 md:-ml-4">
           {images.map((image, index) => (
-            <CarouselItem key={index} className="pl-2 md:pl-4 relative">
+            <CarouselItem key={index} className="pl-2 md:pl-4 relative group">
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.5 }}
-                className="relative w-full overflow-hidden rounded-xl bg-white shadow-lg"
+                className="relative w-full overflow-hidden rounded-xl bg-white shadow-lg group-hover:shadow-xl transition-shadow duration-300"
               >
                 <div className="aspect-auto max-h-[700px] w-full">
                   <img
                     src={image.src}
                     alt={image.alt}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain transform transition-transform duration-300 group-hover:scale-[1.02]"
                   />
                 </div>
               </motion.div>
@@ -65,13 +65,15 @@ export const ImageCarousel = () => {
         </CarouselContent>
         <CarouselPrevious className={cn(
           "absolute -left-12 top-1/2 -translate-y-1/2",
-          "bg-white/80 hover:bg-green-500 hover:text-white transition-colors",
-          "hidden md:flex"
+          "bg-white/80 hover:bg-green-500 hover:text-white transition-all duration-300",
+          "hidden md:flex",
+          "transform hover:scale-110"
         )} />
         <CarouselNext className={cn(
           "absolute -right-12 top-1/2 -translate-y-1/2",
-          "bg-white/80 hover:bg-green-500 hover:text-white transition-colors",
-          "hidden md:flex"
+          "bg-white/80 hover:bg-green-500 hover:text-white transition-all duration-300",
+          "hidden md:flex",
+          "transform hover:scale-110"
         )} />
       </Carousel>
     </div>
