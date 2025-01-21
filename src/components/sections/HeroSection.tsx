@@ -28,7 +28,7 @@ export const HeroSection = () => {
   }
 
   return (
-    <section className="relative min-h-[90vh] md:h-[90vh] flex items-center justify-center bg-gradient-to-b from-green-50 via-white to-yellow-50 overflow-hidden py-8 md:py-0">
+    <section className="relative min-h-[90vh] md:h-[90vh] flex items-center justify-center bg-gradient-to-b from-green-50 via-white to-yellow-50 overflow-hidden py-12 px-4 md:py-0 md:px-0">
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 to-yellow-500/5" />
       </div>
@@ -39,19 +39,19 @@ export const HeroSection = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-center md:text-left"
+            className="text-center md:text-left space-y-6"
           >
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 mb-4 md:mb-6">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 leading-tight">
               Découvrez SHAKE OFF Phyto Fiber
             </h1>
-            <p className="text-lg md:text-xl text-green-700 mb-6 md:mb-8">
-              Votre solution naturelle pour une détoxification efficace et un bien-être optimal
+            <p className="text-base sm:text-lg md:text-xl text-green-700 max-w-xl mx-auto md:mx-0">
+              Votre solution naturelle pour une détoxification efficace et un bien-être digestif optimal
             </p>
             <Dialog open={showMoreInfo} onOpenChange={setShowMoreInfo}>
               <DialogTrigger asChild>
                 <Button 
                   size="lg" 
-                  className="bg-green-600 hover:bg-green-700 text-white px-6 md:px-8 py-2 md:py-3 text-base md:text-lg"
+                  className="bg-green-600 hover:bg-green-700 text-white px-6 md:px-8 py-3 text-base md:text-lg transform hover:scale-105 transition-all duration-300 w-full sm:w-auto"
                 >
                   En savoir plus
                 </Button>
@@ -71,7 +71,7 @@ export const HeroSection = () => {
                   >
                     <motion.img
                       src={siteImages.productInfo1}
-                      alt="Information détaillée 1"
+                      alt="Détails sur la composition et les bienfaits de Shake Off Phyto Fiber"
                       className={`w-full rounded-lg shadow-xl transition-transform duration-300 ${
                         !isMobile ? 'cursor-pointer' : ''
                       } ${zoomedImage === siteImages.productInfo1 && !isMobile ? "scale-150" : ""}`}
@@ -86,7 +86,7 @@ export const HeroSection = () => {
                   >
                     <motion.img
                       src={siteImages.productInfo2}
-                      alt="Information détaillée 2"
+                      alt="Mode d'emploi et recommandations pour Shake Off Phyto Fiber"
                       className={`w-full rounded-lg shadow-xl transition-transform duration-300 ${
                         !isMobile ? 'cursor-pointer' : ''
                       } ${zoomedImage === siteImages.productInfo2 && !isMobile ? "scale-150" : ""}`}
@@ -101,11 +101,11 @@ export const HeroSection = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="relative"
+            className="relative mt-8 md:mt-0"
           >
             <motion.img
               src={siteImages.productHero}
-              alt="Shake Off Phyto Fiber Présentation"
+              alt="Shake Off Phyto Fiber - Solution naturelle pour la détoxification et la santé digestive"
               className="w-full max-w-xl mx-auto rounded-lg shadow-2xl"
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
