@@ -3,9 +3,10 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
+import { PaymentMethodSection } from "./order/PaymentMethodSection";
+import { OrderSummary } from "./order/OrderSummary";
 
 interface OrderFormData {
   full_name: string;
@@ -23,8 +24,7 @@ export const OrderForm = ({ onSuccess }: { onSuccess: () => void }) => {
   
   const paymentMethod = watch("payment_method");
   const quantity = watch("quantity", 1);
-  const unitPrice = 25800; // Prix unitaire en FCFA
-  const totalPrice = quantity * unitPrice;
+  const unitPrice = 25800;
 
   const onSubmit = async (data: OrderFormData) => {
     setIsSubmitting(true);
@@ -34,7 +34,7 @@ export const OrderForm = ({ onSuccess }: { onSuccess: () => void }) => {
         .insert([
           { 
             ...data,
-            total_price: totalPrice,
+            total_price: quantity * unitPrice,
             status: 'pending'
           }
         ]);
@@ -136,65 +136,16 @@ export const OrderForm = ({ onSuccess }: { onSuccess: () => void }) => {
           )}
         </div>
 
-        <div className="space-y-3">
-          <Label>Méthode de paiement</Label>
-          <RadioGroup 
-            defaultValue="orange_money"
-            className="space-y-3"
-            {...register("payment_method", { required: "Ce champ est requis" })}
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="orange_money" id="orange_money" />
-              <Label htmlFor="orange_money">Orange Money (+221776344286)</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="wave" id="wave" />
-              <Label htmlFor="wave">Wave</Label>
-            </div>
-          </RadioGroup>
-          {errors.payment_method && (
-            <p className="text-red-500 text-sm">{errors.payment_method.message}</p>
-          )}
-        </div>
+        <PaymentMethodSection 
+          paymentMethod={paymentMethod} 
+          register={register}
+          errors={errors}
+        />
 
-        {paymentMethod === "wave" && (
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <p className="text-sm text-blue-800 mb-4">Paiement Wave disponible via QR code ou lien direct :</p>
-            <div className="flex flex-col items-center">
-              <img 
-                src="/lovable-uploads/d7272e63-3e15-4089-9430-73d262e04a51.png" 
-                alt="QR Code Wave"
-                className="w-48 h-48 mb-4"
-              />
-              <a 
-                href="https://pay.wave.com/m/M_MO1NT4Bhh6eN/c/sn/" 
-                className="text-blue-600 hover:text-blue-800 text-sm underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Cliquez ici pour payer avec Wave
-              </a>
-            </div>
-          </div>
-        )}
-
-        <div className="bg-green-50 p-4 rounded-lg">
-          <h3 className="font-medium text-green-800 mb-2">Récapitulatif de la commande</h3>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span>Prix unitaire:</span>
-              <span>{unitPrice.toLocaleString()} FCFA</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Quantité:</span>
-              <span>{quantity} boîte(s)</span>
-            </div>
-            <div className="flex justify-between font-medium text-green-800 mt-2 pt-2 border-t border-green-200">
-              <span>Total:</span>
-              <span>{totalPrice.toLocaleString()} FCFA</span>
-            </div>
-          </div>
-        </div>
+        <OrderSummary 
+          quantity={quantity} 
+          unitPrice={unitPrice}
+        />
       </div>
 
       <Button 
