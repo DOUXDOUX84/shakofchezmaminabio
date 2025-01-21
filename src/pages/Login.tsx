@@ -57,6 +57,8 @@ const Login = () => {
         return 'Identifiants invalides. Veuillez vérifier votre email et mot de passe.';
       case 'Email not confirmed':
         return 'Veuillez vérifier votre adresse email avant de vous connecter.';
+      case 'User already registered':
+        return 'Cette adresse email est déjà utilisée. Veuillez vous connecter ou utiliser une autre adresse email.';
       default:
         return error.message;
     }
