@@ -24,11 +24,11 @@ export const PaymentMethodSection: React.FC<PaymentMethodSectionProps> = ({
       >
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="orange_money" id="orange_money" />
-          <Label htmlFor="orange_money">Orange Money (+221776344286)</Label>
+          <Label htmlFor="orange_money" className="text-sm">Orange Money (+221776344286)</Label>
         </div>
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="wave" id="wave" />
-          <Label htmlFor="wave">Wave</Label>
+          <Label htmlFor="wave" className="text-sm">Wave</Label>
         </div>
       </RadioGroup>
       {errors.payment_method && (
