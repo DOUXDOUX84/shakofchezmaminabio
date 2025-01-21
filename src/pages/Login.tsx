@@ -139,10 +139,18 @@ const Login = () => {
                     password_label: 'Mot de passe',
                     button_label: 'Se connecter',
                     loading_button_label: 'Connexion en cours...',
+                  },
+                  sign_up: {
+                    email_label: 'Adresse email',
+                    password_label: 'Mot de passe',
+                    button_label: 'Créer un compte',
+                    loading_button_label: 'Création en cours...',
+                    link_text: 'Pas encore de compte ? Inscrivez-vous',
                   }
                 }
               }}
               providers={[]}
+              view="sign_up"
             />
             <Button
               onClick={() => setShowResetPassword(true)}
