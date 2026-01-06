@@ -1,0 +1,148 @@
+{
+    "common": {
+        "orderNow": "Commander maintenant",
+        "addToCart": "Ajouter au panier",
+        "checkout": "Procéder au paiement",
+        "processing": "Traitement en cours...",
+        "close": "Fermer",
+        "cancel": "Annuler",
+        "submit": "Envoyer",
+        "loading": "Chargement...",
+        "success": "Succès !",
+        "error": "Erreur",
+        "optional": "optionnel",
+        "required": "obligatoire",
+        "learnMore": "En savoir plus",
+        "contactUs": "Contactez-nous",
+        "followUs": "Suivez-nous",
+        "price": "Prix",
+        "quantity": "Quantité",
+        "total": "Total",
+        "box": "boîte",
+        "boxes": "boîtes"
+    },
+    "nav": {
+        "home": "Accueil",
+        "benefits": "Bienfaits",
+        "ingredients": "Ingrédients",
+        "order": "Commander",
+        "contact": "Contact"
+    },
+    "hero": {
+        "title": "SHAKE OFF Phyto Fiber",
+        "subtitle": "Nettoyez votre système digestif avec efficacité",
+        "tagline": "Grâce au SHAKE OFF de EDMARK",
+        "cta": "Commander maintenant",
+        "naturalProduct": "100% Naturel",
+        "certifiedProduct": "Certifié Halal"
+    },
+    "benefits": {
+        "title": "Les Bienfaits du Shake Off",
+        "subtitle": "Découvrez pourquoi des milliers de personnes font confiance au Shake Off Phyto Fiber",
+        "digestiveHealth": "Santé Digestive",
+        "digestiveHealthDesc": "Nettoie le système digestif et favorise un transit intestinal sain",
+        "weightManagement": "Gestion du Poids",
+        "weightManagementDesc": "Aide à maintenir un poids santé en favorisant l'élimination des toxines",
+        "naturalDetox": "Détox Naturelle",
+        "naturalDetoxDesc": "Élimine les toxines accumulées dans le corps de façon naturelle",
+        "energy": "Boost d'Énergie",
+        "energyDesc": "Augmente les niveaux d'énergie en améliorant l'absorption des nutriments",
+        "skinHealth": "Santé de la Peau",
+        "skinHealthDesc": "Améliore l'éclat de la peau en éliminant les impuretés de l'intérieur",
+        "immunity": "Renforce l'Immunité",
+        "immunityDesc": "Soutient le système immunitaire grâce à ses fibres naturelles"
+    },
+    "keyBenefits": {
+        "title": "Pourquoi Choisir Shake Off ?",
+        "subtitle": "Les avantages clés de notre produit",
+        "fightsCancer": "Lutte contre le cancer du côlon",
+        "eliminatesWaste": "Élimine les déchets",
+        "promotesWeightLoss": "Favorise la perte de poids",
+        "reducesCholesterol": "Réduit le mauvais cholestérol",
+        "goodBacteria": "Favorise la croissance de bonnes bactéries",
+        "reducesConstipation": "Réduit la constipation"
+    },
+    "ingredients": {
+        "title": "Composition Naturelle",
+        "subtitle": "Des ingrédients de qualité pour votre bien-être",
+        "oatFiber": "Fibres de blé et d'avoine",
+        "roselle": "Roselle",
+        "garcinia": "Garcinia Cambogia",
+        "inulin": "Inuline",
+        "plantFibers": "Fibres végétales"
+    },
+    "order": {
+        "title": "Commander votre Shake Off",
+        "subtitle": "Livraison rapide au Sénégal",
+        "formTitle": "Formulaire de commande",
+        "fullName": "Nom complet",
+        "email": "Email",
+        "emailOptional": "votre@email.com (optionnel)",
+        "address": "Adresse de livraison",
+        "addressPlaceholder": "Le livreur vous appellera pour confirmer",
+        "addressNote": "Notre livreur vous contactera par téléphone avant la livraison",
+        "phone": "Téléphone",
+        "paymentMethod": "Méthode de paiement",
+        "orangeMoney": "Orange Money",
+        "wave": "Wave",
+        "orderSummary": "Résumé de la commande",
+        "pricePerBox": "Prix par boîte",
+        "totalPrice": "Total à payer",
+        "placeOrder": "Passer la commande",
+        "orderSuccess": "Commande enregistrée !",
+        "orderSuccessMessage": "Veuillez maintenant effectuer le paiement et envoyer votre preuve.",
+        "orderError": "Une erreur est survenue. Veuillez réessayer."
+    },
+    "payment": {
+        "title": "Instructions de paiement",
+        "openApp": "Ouvrez votre application",
+        "sendAmount": "Envoyez",
+        "toNumber": "Au numéro",
+        "takeScreenshot": "Prenez une capture d'écran de la confirmation",
+        "clickToPay": "Cliquez sur le bouton ci-dessous pour payer via",
+        "payWith": "Payer avec",
+        "uploadProof": "Envoyer votre preuve de paiement",
+        "uploadDescription": "Capture d'écran ou PDF de votre confirmation de paiement",
+        "selectFile": "Cliquez pour sélectionner un fichier",
+        "fileTypes": "Images (JPG, PNG) ou PDF - Max 5 MB",
+        "sendProof": "Envoyer la preuve",
+        "uploading": "Envoi en cours...",
+        "laterButton": "Plus tard",
+        "proofSent": "Preuve de paiement envoyée !",
+        "proofSentMessage": "Nous vérifions votre paiement et vous contacterons bientôt pour la livraison.",
+        "whatsappNote": "Vous pouvez aussi envoyer votre preuve par WhatsApp si vous préférez",
+        "fileTooLarge": "La taille maximum est de 5 MB",
+        "noFileSelected": "Veuillez sélectionner une capture d'écran ou un PDF"
+    },
+    "contact": {
+        "title": "Contactez-nous",
+        "whatsapp": "Nous contacter sur WhatsApp",
+        "call": "Appelez-nous",
+        "email": "Envoyez-nous un email"
+    },
+    "international": {
+        "title": "Commandez à l'International",
+        "usaButton": "Commander aux États-Unis",
+        "southAfricaButton": "Commander en Afrique du Sud"
+    },
+    "footer": {
+        "copyright": "© 2026 CHEZMAMINABIO. Tous droits réservés.",
+        "privacy": "Politique de confidentialité",
+        "terms": "Conditions d'utilisation"
+    },
+    "promotions": {
+        "specialOffer": "Offre Spéciale",
+        "discount": "de réduction",
+        "code": "Code",
+        "expires": "Expire le",
+        "ctaButton": "Profiter de l'offre"
+    },
+    "validation": {
+        "nameRequired": "Le nom doit contenir au moins 2 caractères",
+        "emailInvalid": "Email invalide",
+        "phoneRequired": "Le numéro de téléphone doit contenir au moins 9 chiffres",
+        "quantityMin": "La quantité minimum est de 1",
+        "quantityMax": "La quantité maximum est de 100",
+        "paymentRequired": "Veuillez choisir une méthode de paiement"
+    }
+}

@@ -10,19 +10,9 @@ import { toast } from "@/components/ui/use-toast";
 import { PaymentMethodSection } from "./PaymentMethodSection";
 import { OrderSummary } from "./OrderSummary";
 import { PaymentProofUpload } from "./PaymentProofUpload";
+import { useTranslation } from "@/i18n/LanguageContext";
 
 const PRICE_PER_BOX = 25800;
-
-const formSchema = z.object({
-  fullName: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
-  email: z.string().email("Email invalide").optional().or(z.literal("")),
-  address: z.string().optional().or(z.literal("")),
-  phone: z.string().min(9, "Le numéro de téléphone doit contenir au moins 9 chiffres"),
-  quantity: z.number().min(1, "La quantité minimum est de 1").max(100, "La quantité maximum est de 100"),
-  paymentMethod: z.enum(["orange", "wave"], {
-    required_error: "Veuillez choisir une méthode de paiement",
-  }),
-});
 
 export const OrderForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,6 +20,19 @@ export const OrderForm = () => {
   const [currentOrderId, setCurrentOrderId] = useState<string | null>(null);
   const [currentPaymentMethod, setCurrentPaymentMethod] = useState<"orange" | "wave">("orange");
   const [currentTotalPrice, setCurrentTotalPrice] = useState(0);
+  const { t, language } = useTranslation();
+
+  // Dynamic validation messages based on language
+  const formSchema = z.object({
+    fullName: z.string().min(2, t("validation.nameRequired")),
+    email: z.string().email(t("validation.emailInvalid")).optional().or(z.literal("")),
+    address: z.string().optional().or(z.literal("")),
+    phone: z.string().min(9, t("validation.phoneRequired")),
+    quantity: z.number().min(1, t("validation.quantityMin")).max(100, t("validation.quantityMax")),
+    paymentMethod: z.enum(["orange", "wave"], {
+      required_error: t("validation.paymentRequired"),
+    }),
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -69,36 +72,36 @@ export const OrderForm = () => {
         .single();
 
       if (error) {
-        console.error('Erreur lors de l\'enregistrement de la commande:', error);
+        console.error('Error saving order:', error);
         toast({
-          title: "Erreur",
-          description: "Une erreur est survenue lors de l'enregistrement de votre commande. Veuillez réessayer.",
+          title: t("common.error"),
+          description: t("order.orderError"),
           variant: "destructive",
         });
         return;
       }
 
-      console.log('Commande enregistrée:', order);
+      console.log('Order saved:', order);
 
-      // Stocker les infos pour l'upload de preuve
+      // Store info for proof upload
       setCurrentOrderId(order.id);
       setCurrentPaymentMethod(values.paymentMethod);
       setCurrentTotalPrice(totalPrice);
 
-      // Afficher le formulaire d'upload de preuve
+      // Show proof upload form
       setShowPaymentProof(true);
 
       toast({
-        title: "✅ Commande enregistrée !",
-        description: "Veuillez maintenant effectuer le paiement et envoyer votre preuve.",
+        title: `✅ ${t("order.orderSuccess")}`,
+        description: t("order.orderSuccessMessage"),
         duration: 5000,
       });
 
     } catch (error) {
-      console.error('Erreur inattendue:', error);
+      console.error('Unexpected error:', error);
       toast({
-        title: "Erreur",
-        description: "Une erreur inattendue est survenue. Veuillez réessayer.",
+        title: t("common.error"),
+        description: t("order.orderError"),
         variant: "destructive",
       });
     } finally {
@@ -116,13 +119,15 @@ export const OrderForm = () => {
     setShowPaymentProof(false);
     form.reset();
     toast({
-      title: "Commande en attente",
-      description: "Vous pouvez nous envoyer la preuve de paiement par WhatsApp ou repasser commande.",
+      title: language === "fr" ? "Commande en attente" : "Order pending",
+      description: language === "fr"
+        ? "Vous pouvez nous envoyer la preuve de paiement par WhatsApp ou repasser commande."
+        : "You can send us the payment proof via WhatsApp or place a new order.",
       duration: 8000,
     });
   };
 
-  // Afficher le formulaire d'upload de preuve si une commande est en cours
+  // Show proof upload form if an order is in progress
   if (showPaymentProof && currentOrderId) {
     return (
       <PaymentProofUpload
@@ -143,9 +148,9 @@ export const OrderForm = () => {
           name="fullName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nom complet</FormLabel>
+              <FormLabel>{t("order.fullName")}</FormLabel>
               <FormControl>
-                <Input placeholder="John Doe" {...field} />
+                <Input placeholder={language === "fr" ? "Prénom Nom" : "First Last"} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -157,9 +162,9 @@ export const OrderForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email <span className="text-gray-400 font-normal">(optionnel)</span></FormLabel>
+              <FormLabel>{t("order.email")} <span className="text-gray-400 font-normal">({t("common.optional")})</span></FormLabel>
               <FormControl>
-                <Input type="email" placeholder="votre@email.com (optionnel)" {...field} />
+                <Input type="email" placeholder={t("order.emailOptional")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -171,11 +176,11 @@ export const OrderForm = () => {
           name="address"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Adresse de livraison <span className="text-gray-400 font-normal">(optionnel)</span></FormLabel>
+              <FormLabel>{t("order.address")} <span className="text-gray-400 font-normal">({t("common.optional")})</span></FormLabel>
               <FormControl>
-                <Input placeholder="Le livreur vous appellera pour confirmer" {...field} />
+                <Input placeholder={t("order.addressPlaceholder")} {...field} />
               </FormControl>
-              <p className="text-xs text-gray-500 mt-1">Notre livreur vous contactera par téléphone avant la livraison</p>
+              <p className="text-xs text-gray-500 mt-1">{t("order.addressNote")}</p>
               <FormMessage />
             </FormItem>
           )}
@@ -186,7 +191,7 @@ export const OrderForm = () => {
           name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Téléphone</FormLabel>
+              <FormLabel>{t("order.phone")}</FormLabel>
               <FormControl>
                 <Input type="tel" placeholder="+221 77 123 45 67" {...field} />
               </FormControl>
@@ -200,7 +205,7 @@ export const OrderForm = () => {
           name="quantity"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Quantité</FormLabel>
+              <FormLabel>{t("common.quantity")}</FormLabel>
               <FormControl>
                 <Input
                   type="number"
@@ -228,7 +233,7 @@ export const OrderForm = () => {
           className="w-full bg-green-600 hover:bg-green-700 text-white"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Traitement en cours..." : "Procéder au paiement"}
+          {isSubmitting ? t("common.processing") : t("common.checkout")}
         </Button>
       </form>
     </Form>

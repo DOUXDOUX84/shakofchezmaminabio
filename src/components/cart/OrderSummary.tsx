@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "@/i18n/LanguageContext";
 
 interface OrderSummaryProps {
   quantity: number;
@@ -7,23 +8,25 @@ interface OrderSummaryProps {
 }
 
 export const OrderSummary = ({ quantity, pricePerBox, totalPrice }: OrderSummaryProps) => {
+  const { t, language } = useTranslation();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="bg-green-50 p-4 rounded-lg space-y-2"
     >
-      <h3 className="font-semibold text-green-800">Récapitulatif de la commande</h3>
+      <h3 className="font-semibold text-green-800">{t("order.orderSummary")}</h3>
       <div className="flex justify-between text-sm">
-        <span>Prix unitaire:</span>
+        <span>{t("order.pricePerBox")}:</span>
         <span>{pricePerBox.toLocaleString()} FCFA</span>
       </div>
       <div className="flex justify-between text-sm">
-        <span>Quantité:</span>
-        <span>{quantity} boîte(s)</span>
+        <span>{t("common.quantity")}:</span>
+        <span>{quantity} {quantity > 1 ? t("common.boxes") : t("common.box")}</span>
       </div>
       <div className="flex justify-between font-bold text-green-800 border-t border-green-200 pt-2 mt-2">
-        <span>Total:</span>
+        <span>{t("common.total")}:</span>
         <span>{totalPrice.toLocaleString()} FCFA</span>
       </div>
     </motion.div>

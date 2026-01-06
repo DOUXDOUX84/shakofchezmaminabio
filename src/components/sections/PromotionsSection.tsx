@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Tag, Clock, Percent } from "lucide-react";
+import { useTranslation } from "@/i18n/LanguageContext";
 
 interface Promotion {
     id: string;
@@ -19,6 +20,7 @@ interface Promotion {
 export const PromotionsSection = () => {
     const [promotions, setPromotions] = useState<Promotion[]>([]);
     const [loading, setLoading] = useState(true);
+    const { t, language } = useTranslation();
 
     useEffect(() => {
         const fetchPromotions = async () => {
@@ -34,7 +36,7 @@ export const PromotionsSection = () => {
                     return;
                 }
 
-                // Filtrer les promos actives (dans la période valide)
+                // Filter active promos (within valid period)
                 const now = new Date();
                 const activePromos = (data || []).filter((promo) => {
                     if (promo.start_date && new Date(promo.start_date) > now) return false;
@@ -52,7 +54,7 @@ export const PromotionsSection = () => {
 
         fetchPromotions();
 
-        // Écouter les changements en temps réel
+        // Listen for real-time changes
         const channel = supabase
             .channel("promotions-changes")
             .on(
@@ -91,7 +93,7 @@ export const PromotionsSection = () => {
                         transition={{ delay: index * 0.1 }}
                         className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6"
                     >
-                        {/* Image de la promo */}
+                        {/* Promo image */}
                         {promo.image_url && (
                             <div className="w-full md:w-1/3">
                                 <img
@@ -102,12 +104,12 @@ export const PromotionsSection = () => {
                             </div>
                         )}
 
-                        {/* Contenu de la promo */}
+                        {/* Promo content */}
                         <div className="flex-1 text-center md:text-left">
                             <div className="flex items-center justify-center md:justify-start gap-2 mb-3">
                                 <Tag className="w-6 h-6 text-orange-500" />
                                 <span className="text-orange-500 font-bold text-sm uppercase tracking-wide">
-                                    Offre Spéciale
+                                    {t("promotions.specialOffer")}
                                 </span>
                             </div>
 
@@ -123,13 +125,13 @@ export const PromotionsSection = () => {
                                 {promo.discount_percentage && (
                                     <div className="flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full font-bold">
                                         <Percent className="w-5 h-5" />
-                                        <span>-{promo.discount_percentage}%</span>
+                                        <span>-{promo.discount_percentage}% {t("promotions.discount")}</span>
                                     </div>
                                 )}
 
                                 {promo.promo_code && (
                                     <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full font-mono font-bold">
-                                        Code: {promo.promo_code}
+                                        {t("promotions.code")}: {promo.promo_code}
                                     </div>
                                 )}
 
@@ -137,8 +139,10 @@ export const PromotionsSection = () => {
                                     <div className="flex items-center gap-2 text-red-600 text-sm">
                                         <Clock className="w-4 h-4" />
                                         <span>
-                                            Expire le{" "}
-                                            {new Date(promo.end_date).toLocaleDateString("fr-FR")}
+                                            {t("promotions.expires")}{" "}
+                                            {new Date(promo.end_date).toLocaleDateString(
+                                                language === "fr" ? "fr-FR" : "en-US"
+                                            )}
                                         </span>
                                     </div>
                                 )}
@@ -149,7 +153,7 @@ export const PromotionsSection = () => {
                                 size="lg"
                                 className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold px-8 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all"
                             >
-                                🛒 Profiter de l'offre
+                                🛒 {t("promotions.ctaButton")}
                             </Button>
                         </div>
                     </motion.div>

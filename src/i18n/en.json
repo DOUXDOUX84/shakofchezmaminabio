@@ -1,0 +1,148 @@
+{
+    "common": {
+        "orderNow": "Order Now",
+        "addToCart": "Add to Cart",
+        "checkout": "Proceed to Payment",
+        "processing": "Processing...",
+        "close": "Close",
+        "cancel": "Cancel",
+        "submit": "Submit",
+        "loading": "Loading...",
+        "success": "Success!",
+        "error": "Error",
+        "optional": "optional",
+        "required": "required",
+        "learnMore": "Learn More",
+        "contactUs": "Contact Us",
+        "followUs": "Follow Us",
+        "price": "Price",
+        "quantity": "Quantity",
+        "total": "Total",
+        "box": "box",
+        "boxes": "boxes"
+    },
+    "nav": {
+        "home": "Home",
+        "benefits": "Benefits",
+        "ingredients": "Ingredients",
+        "order": "Order",
+        "contact": "Contact"
+    },
+    "hero": {
+        "title": "SHAKE OFF Phyto Fiber",
+        "subtitle": "Clean your digestive system effectively",
+        "tagline": "With SHAKE OFF by EDMARK",
+        "cta": "Order Now",
+        "naturalProduct": "100% Natural",
+        "certifiedProduct": "Halal Certified"
+    },
+    "benefits": {
+        "title": "Benefits of Shake Off",
+        "subtitle": "Discover why thousands of people trust Shake Off Phyto Fiber",
+        "digestiveHealth": "Digestive Health",
+        "digestiveHealthDesc": "Cleanses the digestive system and promotes healthy bowel movements",
+        "weightManagement": "Weight Management",
+        "weightManagementDesc": "Helps maintain a healthy weight by promoting toxin elimination",
+        "naturalDetox": "Natural Detox",
+        "naturalDetoxDesc": "Naturally eliminates accumulated toxins from the body",
+        "energy": "Energy Boost",
+        "energyDesc": "Increases energy levels by improving nutrient absorption",
+        "skinHealth": "Skin Health",
+        "skinHealthDesc": "Improves skin radiance by removing impurities from within",
+        "immunity": "Boosts Immunity",
+        "immunityDesc": "Supports the immune system with natural fibers"
+    },
+    "keyBenefits": {
+        "title": "Why Choose Shake Off?",
+        "subtitle": "Key advantages of our product",
+        "fightsCancer": "Fights colon cancer",
+        "eliminatesWaste": "Eliminates waste",
+        "promotesWeightLoss": "Promotes weight loss",
+        "reducesCholesterol": "Reduces bad cholesterol",
+        "goodBacteria": "Promotes good bacteria growth",
+        "reducesConstipation": "Reduces constipation"
+    },
+    "ingredients": {
+        "title": "Natural Composition",
+        "subtitle": "Quality ingredients for your well-being",
+        "oatFiber": "Wheat and Oat Fiber",
+        "roselle": "Roselle",
+        "garcinia": "Garcinia Cambogia",
+        "inulin": "Inulin",
+        "plantFibers": "Plant Fibers"
+    },
+    "order": {
+        "title": "Order your Shake Off",
+        "subtitle": "Fast delivery in Senegal",
+        "formTitle": "Order Form",
+        "fullName": "Full Name",
+        "email": "Email",
+        "emailOptional": "your@email.com (optional)",
+        "address": "Delivery Address",
+        "addressPlaceholder": "Delivery person will call to confirm",
+        "addressNote": "Our delivery person will contact you by phone before delivery",
+        "phone": "Phone",
+        "paymentMethod": "Payment Method",
+        "orangeMoney": "Orange Money",
+        "wave": "Wave",
+        "orderSummary": "Order Summary",
+        "pricePerBox": "Price per box",
+        "totalPrice": "Total to pay",
+        "placeOrder": "Place Order",
+        "orderSuccess": "Order registered!",
+        "orderSuccessMessage": "Please now make the payment and send your proof.",
+        "orderError": "An error occurred. Please try again."
+    },
+    "payment": {
+        "title": "Payment Instructions",
+        "openApp": "Open your app",
+        "sendAmount": "Send",
+        "toNumber": "To number",
+        "takeScreenshot": "Take a screenshot of the confirmation",
+        "clickToPay": "Click the button below to pay via",
+        "payWith": "Pay with",
+        "uploadProof": "Upload your payment proof",
+        "uploadDescription": "Screenshot or PDF of your payment confirmation",
+        "selectFile": "Click to select a file",
+        "fileTypes": "Images (JPG, PNG) or PDF - Max 5 MB",
+        "sendProof": "Send proof",
+        "uploading": "Uploading...",
+        "laterButton": "Later",
+        "proofSent": "Payment proof sent!",
+        "proofSentMessage": "We are verifying your payment and will contact you soon for delivery.",
+        "whatsappNote": "You can also send your proof via WhatsApp if you prefer",
+        "fileTooLarge": "Maximum file size is 5 MB",
+        "noFileSelected": "Please select a screenshot or PDF"
+    },
+    "contact": {
+        "title": "Contact Us",
+        "whatsapp": "Contact us on WhatsApp",
+        "call": "Call us",
+        "email": "Send us an email"
+    },
+    "international": {
+        "title": "Order Internationally",
+        "usaButton": "Order in the USA",
+        "southAfricaButton": "Order in South Africa"
+    },
+    "footer": {
+        "copyright": "© 2026 CHEZMAMINABIO. All rights reserved.",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Use"
+    },
+    "promotions": {
+        "specialOffer": "Special Offer",
+        "discount": "off",
+        "code": "Code",
+        "expires": "Expires on",
+        "ctaButton": "Get this offer"
+    },
+    "validation": {
+        "nameRequired": "Name must contain at least 2 characters",
+        "emailInvalid": "Invalid email",
+        "phoneRequired": "Phone number must contain at least 9 digits",
+        "quantityMin": "Minimum quantity is 1",
+        "quantityMax": "Maximum quantity is 100",
+        "paymentRequired": "Please choose a payment method"
+    }
+}
