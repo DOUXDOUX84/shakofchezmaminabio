@@ -21,9 +21,10 @@ import {
     DialogTrigger,
     DialogFooter,
 } from "@/components/ui/dialog";
-import { Loader2, Plus, Trash2, Edit, Video, Play, ExternalLink } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Loader2, Plus, Trash2, Edit, Video, Play, ExternalLink, Upload, Link } from "lucide-react";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 interface VideoItem {
     id: string;
@@ -40,6 +41,11 @@ export const VideosPanel = () => {
     const queryClient = useQueryClient();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [editingVideo, setEditingVideo] = useState<VideoItem | null>(null);
+    const [uploadTab, setUploadTab] = useState<"url" | "file">("url");
+    const [isUploading, setIsUploading] = useState(false);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -72,6 +78,8 @@ export const VideosPanel = () => {
             display_order: videos?.length || 0,
         });
         setEditingVideo(null);
+        setSelectedFile(null);
+        setUploadTab("url");
     };
 
     const openEditDialog = (video: VideoItem) => {
@@ -84,22 +92,101 @@ export const VideosPanel = () => {
             is_active: video.is_active,
             display_order: video.display_order,
         });
+        setUploadTab("url");
         setIsDialogOpen(true);
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            // Vérifier la taille (max 50MB)
+            if (file.size > 50 * 1024 * 1024) {
+                toast.error("La vidéo est trop volumineuse. Maximum 50 MB.");
+                return;
+            }
+            // Vérifier le type
+            if (!file.type.startsWith("video/")) {
+                toast.error("Veuillez sélectionner un fichier vidéo.");
+                return;
+            }
+            setSelectedFile(file);
+            // Pré-remplir le titre si vide
+            if (!formData.title) {
+                setFormData({ ...formData, title: file.name.replace(/\.[^/.]+$/, "") });
+            }
+        }
+    };
+
+    const uploadVideoFile = async (): Promise<string | null> => {
+        if (!selectedFile) return null;
+
+        try {
+            setIsUploading(true);
+
+            // Créer un nom unique
+            const fileExt = selectedFile.name.split(".").pop();
+            const fileName = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
+
+            // Upload vers Supabase Storage
+            const { data, error } = await supabase.storage
+                .from("videos")
+                .upload(fileName, selectedFile, {
+                    cacheControl: "3600",
+                    upsert: false,
+                });
+
+            if (error) {
+                console.error("Upload error:", error);
+                throw error;
+            }
+
+            // Obtenir l'URL publique
+            const { data: urlData } = supabase.storage
+                .from("videos")
+                .getPublicUrl(fileName);
+
+            return urlData.publicUrl;
+        } catch (error) {
+            console.error("Error uploading video:", error);
+            toast.error("Erreur lors de l'upload de la vidéo");
+            return null;
+        } finally {
+            setIsUploading(false);
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!formData.title || !formData.video_url) {
-            toast.error("Le titre et l'URL de la vidéo sont obligatoires");
+        if (!formData.title) {
+            toast.error("Le titre est obligatoire");
+            return;
+        }
+
+        // Vérifier qu'on a soit une URL soit un fichier
+        if (uploadTab === "url" && !formData.video_url && !editingVideo) {
+            toast.error("Veuillez entrer une URL de vidéo");
+            return;
+        }
+        if (uploadTab === "file" && !selectedFile && !editingVideo) {
+            toast.error("Veuillez sélectionner un fichier vidéo");
             return;
         }
 
         try {
+            let videoUrl = formData.video_url;
+
+            // Si on upload un fichier
+            if (uploadTab === "file" && selectedFile) {
+                const uploadedUrl = await uploadVideoFile();
+                if (!uploadedUrl) return;
+                videoUrl = uploadedUrl;
+            }
+
             const videoData = {
                 title: formData.title,
                 description: formData.description || null,
-                video_url: formData.video_url,
+                video_url: videoUrl,
                 thumbnail_url: formData.thumbnail_url || null,
                 is_active: formData.is_active,
                 display_order: formData.display_order,
@@ -147,10 +234,18 @@ export const VideosPanel = () => {
         }
     };
 
-    const deleteVideo = async (id: string) => {
+    const deleteVideo = async (id: string, videoUrl: string) => {
         if (!confirm("Êtes-vous sûr de vouloir supprimer cette vidéo ?")) return;
 
         try {
+            // Si c'est une vidéo uploadée sur Supabase Storage, la supprimer aussi
+            if (videoUrl.includes("supabase.co/storage")) {
+                const fileName = videoUrl.split("/").pop();
+                if (fileName) {
+                    await supabase.storage.from("videos").remove([fileName]);
+                }
+            }
+
             const { error } = await supabase.from("videos").delete().eq("id", id);
 
             if (error) throw error;
@@ -187,7 +282,7 @@ export const VideosPanel = () => {
                         <Video className="w-5 h-5" /> Gestion des Vidéos
                     </h2>
                     <p className="text-sm text-gray-500">
-                        Ajoutez des vidéos YouTube ou autres pour présenter vos produits
+                        Ajoutez des vidéos YouTube ou uploadez depuis votre PC (max 50 MB)
                     </p>
                 </div>
                 <Dialog
@@ -232,21 +327,95 @@ export const VideosPanel = () => {
                                     placeholder="Décrivez la vidéo..."
                                 />
                             </div>
-                            <div>
-                                <Label htmlFor="video_url">URL de la vidéo *</Label>
-                                <Input
-                                    id="video_url"
-                                    value={formData.video_url}
-                                    onChange={(e) =>
-                                        setFormData({ ...formData, video_url: e.target.value })
-                                    }
-                                    placeholder="https://www.youtube.com/watch?v=..."
-                                    required
-                                />
-                                <p className="text-xs text-gray-500 mt-1">
-                                    Collez le lien YouTube ou un lien direct vers la vidéo
-                                </p>
-                            </div>
+
+                            {/* Onglets pour choisir URL ou Upload */}
+                            {!editingVideo && (
+                                <Tabs value={uploadTab} onValueChange={(v) => setUploadTab(v as "url" | "file")}>
+                                    <TabsList className="grid w-full grid-cols-2">
+                                        <TabsTrigger value="url" className="flex items-center gap-2">
+                                            <Link className="w-4 h-4" /> Lien URL
+                                        </TabsTrigger>
+                                        <TabsTrigger value="file" className="flex items-center gap-2">
+                                            <Upload className="w-4 h-4" /> Upload fichier
+                                        </TabsTrigger>
+                                    </TabsList>
+                                    <TabsContent value="url" className="mt-4">
+                                        <div>
+                                            <Label htmlFor="video_url">URL de la vidéo</Label>
+                                            <Input
+                                                id="video_url"
+                                                value={formData.video_url}
+                                                onChange={(e) =>
+                                                    setFormData({ ...formData, video_url: e.target.value })
+                                                }
+                                                placeholder="https://www.youtube.com/watch?v=..."
+                                            />
+                                            <p className="text-xs text-gray-500 mt-1">
+                                                Collez le lien YouTube ou un lien direct
+                                            </p>
+                                        </div>
+                                    </TabsContent>
+                                    <TabsContent value="file" className="mt-4">
+                                        <div>
+                                            <Label>Fichier vidéo</Label>
+                                            <div
+                                                className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-green-500 transition-colors cursor-pointer"
+                                                onClick={() => fileInputRef.current?.click()}
+                                            >
+                                                <input
+                                                    ref={fileInputRef}
+                                                    type="file"
+                                                    accept="video/*"
+                                                    onChange={handleFileChange}
+                                                    className="hidden"
+                                                />
+                                                {selectedFile ? (
+                                                    <div className="space-y-2">
+                                                        <Video className="w-10 h-10 text-green-600 mx-auto" />
+                                                        <p className="font-medium text-green-700">{selectedFile.name}</p>
+                                                        <p className="text-sm text-gray-500">
+                                                            {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB
+                                                        </p>
+                                                        <Button
+                                                            type="button"
+                                                            variant="outline"
+                                                            size="sm"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                setSelectedFile(null);
+                                                            }}
+                                                        >
+                                                            Changer de fichier
+                                                        </Button>
+                                                    </div>
+                                                ) : (
+                                                    <div className="space-y-2">
+                                                        <Upload className="w-10 h-10 text-gray-400 mx-auto" />
+                                                        <p className="text-gray-600">Cliquez pour sélectionner une vidéo</p>
+                                                        <p className="text-xs text-gray-500">MP4, MOV, AVI - Max 50 MB</p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </TabsContent>
+                                </Tabs>
+                            )}
+
+                            {/* Si on édite, afficher l'URL actuelle */}
+                            {editingVideo && (
+                                <div>
+                                    <Label htmlFor="video_url">URL de la vidéo</Label>
+                                    <Input
+                                        id="video_url"
+                                        value={formData.video_url}
+                                        onChange={(e) =>
+                                            setFormData({ ...formData, video_url: e.target.value })
+                                        }
+                                        placeholder="https://..."
+                                    />
+                                </div>
+                            )}
+
                             <div>
                                 <Label htmlFor="thumbnail_url">URL de la miniature (optionnel)</Label>
                                 <Input
@@ -290,11 +459,25 @@ export const VideosPanel = () => {
                                     type="button"
                                     variant="outline"
                                     onClick={() => setIsDialogOpen(false)}
+                                    disabled={isUploading}
                                 >
                                     Annuler
                                 </Button>
-                                <Button type="submit" className="bg-green-600 hover:bg-green-700">
-                                    {editingVideo ? "Mettre à jour" : "Ajouter"}
+                                <Button
+                                    type="submit"
+                                    className="bg-green-600 hover:bg-green-700"
+                                    disabled={isUploading}
+                                >
+                                    {isUploading ? (
+                                        <>
+                                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                            Upload en cours...
+                                        </>
+                                    ) : editingVideo ? (
+                                        "Mettre à jour"
+                                    ) : (
+                                        "Ajouter"
+                                    )}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -318,7 +501,7 @@ export const VideosPanel = () => {
                             <TableRow>
                                 <TableHead>Aperçu</TableHead>
                                 <TableHead>Titre</TableHead>
-                                <TableHead>URL</TableHead>
+                                <TableHead>Source</TableHead>
                                 <TableHead>Ordre</TableHead>
                                 <TableHead>Active</TableHead>
                                 <TableHead>Actions</TableHead>
@@ -327,6 +510,7 @@ export const VideosPanel = () => {
                         <TableBody>
                             {videos.map((video) => {
                                 const youtubeId = getYouTubeId(video.video_url);
+                                const isSupabaseVideo = video.video_url.includes("supabase.co/storage");
                                 const thumbnail =
                                     video.thumbnail_url ||
                                     (youtubeId
@@ -353,15 +537,23 @@ export const VideosPanel = () => {
                                         </TableCell>
                                         <TableCell className="font-medium">{video.title}</TableCell>
                                         <TableCell>
-                                            <a
-                                                href={video.video_url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="flex items-center gap-1 text-blue-600 hover:text-blue-800 text-sm"
-                                            >
-                                                <ExternalLink className="w-3 h-3" />
-                                                Voir
-                                            </a>
+                                            <div className="flex items-center gap-2">
+                                                {isSupabaseVideo ? (
+                                                    <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">📁 Upload</span>
+                                                ) : youtubeId ? (
+                                                    <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">▶️ YouTube</span>
+                                                ) : (
+                                                    <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">🔗 URL</span>
+                                                )}
+                                                <a
+                                                    href={video.video_url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-blue-600 hover:text-blue-800"
+                                                >
+                                                    <ExternalLink className="w-4 h-4" />
+                                                </a>
+                                            </div>
                                         </TableCell>
                                         <TableCell>{video.display_order}</TableCell>
                                         <TableCell>
@@ -382,7 +574,7 @@ export const VideosPanel = () => {
                                                 <Button
                                                     variant="outline"
                                                     size="sm"
-                                                    onClick={() => deleteVideo(video.id)}
+                                                    onClick={() => deleteVideo(video.id, video.video_url)}
                                                     className="text-red-600 hover:text-red-700"
                                                 >
                                                     <Trash2 className="w-4 h-4" />
