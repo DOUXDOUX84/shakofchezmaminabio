@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, ShoppingCart, Image, Tag, LogOut, Home, Settings } from "lucide-react";
+import { Loader2, ShoppingCart, Image, Tag, LogOut, Home, Video } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
   { path: "/admin", label: "Commandes", icon: ShoppingCart },
   { path: "/admin/images", label: "Images", icon: Image },
+  { path: "/admin/videos", label: "Vidéos", icon: Video },
   { path: "/admin/promotions", label: "Promotions", icon: Tag },
 ];
 
@@ -112,8 +113,8 @@ export const AdminLayout = ({ children }: { children: React.ReactNode }) => {
                   key={item.path}
                   to={item.path}
                   className={`flex items-center gap-2 px-4 py-3 border-b-2 transition-colors whitespace-nowrap ${isActive
-                      ? "border-green-600 text-green-600 bg-green-50"
-                      : "border-transparent text-gray-600 hover:text-green-600 hover:bg-gray-50"
+                    ? "border-green-600 text-green-600 bg-green-50"
+                    : "border-transparent text-gray-600 hover:text-green-600 hover:bg-gray-50"
                     }`}
                 >
                   <Icon className="w-4 h-4" />

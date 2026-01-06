@@ -4,6 +4,7 @@ import Login from "@/pages/Login";
 import Admin from "@/pages/Admin";
 import AdminImages from "@/pages/AdminImages";
 import AdminPromotions from "@/pages/AdminPromotions";
+import AdminVideos from "@/pages/AdminVideos";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -19,6 +20,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin/images" element={<AdminImages />} />
+          <Route path="/admin/videos" element={<AdminVideos />} />
           <Route path="/admin/promotions" element={<AdminPromotions />} />
         </Routes>
         <Toaster />
