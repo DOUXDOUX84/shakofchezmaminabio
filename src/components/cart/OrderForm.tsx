@@ -15,8 +15,8 @@ const PRICE_PER_BOX = 25800;
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
-  email: z.string().email("Email invalide"),
-  address: z.string().min(5, "L'adresse doit contenir au moins 5 caractères"),
+  email: z.string().email("Email invalide").optional().or(z.literal("")),
+  address: z.string().optional().or(z.literal("")),
   phone: z.string().min(9, "Le numéro de téléphone doit contenir au moins 9 chiffres"),
   quantity: z.number().min(1, "La quantité minimum est de 1").max(100, "La quantité maximum est de 100"),
   paymentMethod: z.enum(["orange", "wave"], {
@@ -157,9 +157,9 @@ export const OrderForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Email <span className="text-gray-400 font-normal">(optionnel)</span></FormLabel>
               <FormControl>
-                <Input type="email" placeholder="john@example.com" {...field} />
+                <Input type="email" placeholder="votre@email.com (optionnel)" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -171,10 +171,11 @@ export const OrderForm = () => {
           name="address"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Adresse de livraison</FormLabel>
+              <FormLabel>Adresse de livraison <span className="text-gray-400 font-normal">(optionnel)</span></FormLabel>
               <FormControl>
-                <Input placeholder="123 Rue Example" {...field} />
+                <Input placeholder="Le livreur vous appellera pour confirmer" {...field} />
               </FormControl>
+              <p className="text-xs text-gray-500 mt-1">Notre livreur vous contactera par téléphone avant la livraison</p>
               <FormMessage />
             </FormItem>
           )}
