@@ -9,13 +9,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/i18n/LanguageContext";
 
 const fetchContactInfo = async () => {
   const { data, error } = await supabase
     .from('contact_info')
     .select('*')
     .maybeSingle();
-  
+
   if (error) throw error;
   return data;
 };
@@ -25,6 +26,7 @@ export const ContactButton = () => {
     queryKey: ['contactInfo'],
     queryFn: fetchContactInfo,
   });
+  const { t } = useTranslation();
 
   const phoneNumber = contactInfo?.phone_number || "+221 77 777 77 77"; // Fallback value
   const whatsappLink = contactInfo?.whatsapp_link || "https://wa.me/221777777777"; // Fallback value
@@ -32,17 +34,17 @@ export const ContactButton = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           className="bg-[#0EA5E9] hover:bg-[#0EA5E9]/90 text-white border-none shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 font-semibold px-6 py-4 rounded-lg text-lg animate-fade-in"
         >
           <Phone className="h-4 w-4 mr-2" />
-          Nous contacter
+          {t("common.contactUs")}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold text-[#0EA5E9]">Contactez-nous</DialogTitle>
+          <DialogTitle className="text-xl font-semibold text-[#0EA5E9]">{t("contact.title")}</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-4 py-4">
           <Button

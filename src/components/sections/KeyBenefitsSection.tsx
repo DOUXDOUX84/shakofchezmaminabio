@@ -1,47 +1,94 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-const keyBenefits = [
-  {
-    id: "detox",
-    title: "Détoxification Naturelle",
-    description: "Un nettoyage en profondeur de votre système digestif grâce aux fibres naturelles",
-    details: [
-      "Élimine les toxines accumulées",
-      "Nettoie le côlon en douceur",
-      "Améliore le transit intestinal",
-      "Réduit les ballonnements"
-    ],
-    icon: "🌿"
-  },
-  {
-    id: "prevention",
-    title: "Prévention Santé",
-    description: "Protection active contre divers problèmes de santé",
-    details: [
-      "Prévient les maladies du côlon",
-      "Régule le cholestérol",
-      "Renforce le système immunitaire",
-      "Améliore la santé intestinale"
-    ],
-    icon: "🛡️"
-  },
-  {
-    id: "digestion",
-    title: "Digestion Optimale",
-    description: "Amélioration significative de votre digestion quotidienne",
-    details: [
-      "Facilite la digestion",
-      "Réduit la constipation",
-      "Équilibre la flore intestinale",
-      "Améliore l'absorption des nutriments"
-    ],
-    icon: "✨"
-  }
-];
+import { useTranslation } from "@/i18n/LanguageContext";
 
 export const KeyBenefitsSection = () => {
+  const { language } = useTranslation();
+
+  const keyBenefits = language === "fr" ? [
+    {
+      id: "detox",
+      title: "Détoxification Naturelle",
+      description: "Un nettoyage en profondeur de votre système digestif grâce aux fibres naturelles",
+      details: [
+        "Élimine les toxines accumulées",
+        "Nettoie le côlon en douceur",
+        "Améliore le transit intestinal",
+        "Réduit les ballonnements"
+      ],
+      icon: "🌿"
+    },
+    {
+      id: "prevention",
+      title: "Prévention Santé",
+      description: "Protection active contre divers problèmes de santé",
+      details: [
+        "Prévient les maladies du côlon",
+        "Régule le cholestérol",
+        "Renforce le système immunitaire",
+        "Améliore la santé intestinale"
+      ],
+      icon: "🛡️"
+    },
+    {
+      id: "digestion",
+      title: "Digestion Optimale",
+      description: "Amélioration significative de votre digestion quotidienne",
+      details: [
+        "Facilite la digestion",
+        "Réduit la constipation",
+        "Équilibre la flore intestinale",
+        "Améliore l'absorption des nutriments"
+      ],
+      icon: "✨"
+    }
+  ] : [
+    {
+      id: "detox",
+      title: "Natural Detoxification",
+      description: "Deep cleansing of your digestive system with natural fibers",
+      details: [
+        "Eliminates accumulated toxins",
+        "Gently cleanses the colon",
+        "Improves intestinal transit",
+        "Reduces bloating"
+      ],
+      icon: "🌿"
+    },
+    {
+      id: "prevention",
+      title: "Health Prevention",
+      description: "Active protection against various health issues",
+      details: [
+        "Prevents colon diseases",
+        "Regulates cholesterol",
+        "Strengthens the immune system",
+        "Improves intestinal health"
+      ],
+      icon: "🛡️"
+    },
+    {
+      id: "digestion",
+      title: "Optimal Digestion",
+      description: "Significant improvement in your daily digestion",
+      details: [
+        "Facilitates digestion",
+        "Reduces constipation",
+        "Balances intestinal flora",
+        "Improves nutrient absorption"
+      ],
+      icon: "✨"
+    }
+  ];
+
+  const sectionTitle = language === "fr"
+    ? "Découvrez les Bienfaits Exceptionnels"
+    : "Discover the Exceptional Benefits";
+
+  const sectionSubtitle = language === "fr"
+    ? "Shake Off Phyto Fiber offre une approche complète pour votre bien-être digestif"
+    : "Shake Off Phyto Fiber offers a complete approach to your digestive wellness";
+
   return (
     <section className="py-12 md:py-20 bg-gradient-to-b from-green-50 to-white">
       <div className="container mx-auto px-4">
@@ -52,10 +99,10 @@ export const KeyBenefitsSection = () => {
           className="text-center mb-8 md:mb-12"
         >
           <h2 className="text-2xl md:text-4xl font-bold text-green-800 mb-4">
-            Découvrez les Bienfaits Exceptionnels
+            {sectionTitle}
           </h2>
           <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
-            Shake Off Phyto Fiber offre une approche complète pour votre bien-être digestif
+            {sectionSubtitle}
           </p>
         </motion.div>
 

@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { Upload, CheckCircle, Loader2 } from "lucide-react";
+import { useTranslation } from "@/i18n/LanguageContext";
 
 interface PaymentProofUploadProps {
     orderId: string;
@@ -27,15 +28,16 @@ export const PaymentProofUpload = ({
     const [file, setFile] = useState<File | null>(null);
     const [isUploading, setIsUploading] = useState(false);
     const [isUploaded, setIsUploaded] = useState(false);
+    const { t, language } = useTranslation();
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files?.[0];
         if (selectedFile) {
-            // Vérifier la taille (max 5MB)
+            // Check size (max 5MB)
             if (selectedFile.size > 5 * 1024 * 1024) {
                 toast({
-                    title: "Fichier trop volumineux",
-                    description: "La taille maximum est de 5 MB",
+                    title: language === "fr" ? "Fichier trop volumineux" : "File too large",
+                    description: t("payment.fileTooLarge"),
                     variant: "destructive",
                 });
                 return;
@@ -47,8 +49,8 @@ export const PaymentProofUpload = ({
     const handleUpload = async () => {
         if (!file) {
             toast({
-                title: "Aucun fichier sélectionné",
-                description: "Veuillez sélectionner une capture d'écran ou un PDF",
+                title: language === "fr" ? "Aucun fichier sélectionné" : "No file selected",
+                description: t("payment.noFileSelected"),
                 variant: "destructive",
             });
             return;
@@ -57,11 +59,11 @@ export const PaymentProofUpload = ({
         try {
             setIsUploading(true);
 
-            // Créer un nom de fichier unique
+            // Create unique filename
             const fileExt = file.name.split(".").pop();
             const fileName = `${orderId}_${Date.now()}.${fileExt}`;
 
-            // Upload vers Supabase Storage
+            // Upload to Supabase Storage
             const { data: uploadData, error: uploadError } = await supabase.storage
                 .from("payment-proofs")
                 .upload(fileName, file);
@@ -71,12 +73,12 @@ export const PaymentProofUpload = ({
                 throw uploadError;
             }
 
-            // Obtenir l'URL publique
+            // Get public URL
             const { data: urlData } = supabase.storage
                 .from("payment-proofs")
                 .getPublicUrl(fileName);
 
-            // Mettre à jour la commande avec l'URL de la preuve
+            // Update order with proof URL
             const { error: updateError } = await supabase
                 .from("orders")
                 .update({
@@ -92,9 +94,8 @@ export const PaymentProofUpload = ({
 
             setIsUploaded(true);
             toast({
-                title: "✅ Preuve envoyée !",
-                description:
-                    "Votre preuve de paiement a été reçue. Nous vérifierons et confirmerons votre commande sous peu.",
+                title: `✅ ${t("payment.proofSent")}`,
+                description: t("payment.proofSentMessage"),
                 duration: 10000,
             });
 
@@ -104,9 +105,10 @@ export const PaymentProofUpload = ({
         } catch (error) {
             console.error("Error uploading proof:", error);
             toast({
-                title: "Erreur d'envoi",
-                description:
-                    "Une erreur est survenue lors de l'envoi. Veuillez réessayer.",
+                title: language === "fr" ? "Erreur d'envoi" : "Upload error",
+                description: language === "fr"
+                    ? "Une erreur est survenue lors de l'envoi. Veuillez réessayer."
+                    : "An error occurred during upload. Please try again.",
                 variant: "destructive",
             });
         } finally {
@@ -119,11 +121,10 @@ export const PaymentProofUpload = ({
             <div className="flex flex-col items-center justify-center py-8 space-y-4">
                 <CheckCircle className="w-16 h-16 text-green-600 animate-bounce" />
                 <h3 className="text-xl font-bold text-green-800">
-                    Preuve de paiement envoyée !
+                    {t("payment.proofSent")}
                 </h3>
                 <p className="text-center text-gray-600">
-                    Nous vérifions votre paiement et vous contacterons bientôt pour la
-                    livraison.
+                    {t("payment.proofSentMessage")}
                 </p>
             </div>
         );
@@ -131,57 +132,56 @@ export const PaymentProofUpload = ({
 
     return (
         <div className="space-y-6 py-4">
-            {/* Instructions de paiement */}
+            {/* Payment instructions */}
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                 <h3 className="font-bold text-green-800 mb-2">
-                    📱 Instructions de paiement
+                    📱 {t("payment.title")}
                 </h3>
 
                 {paymentMethod === "orange" ? (
                     <div className="space-y-2">
                         <p className="text-green-700">
-                            1. Ouvrez votre application <strong>Orange Money</strong>
+                            1. {t("payment.openApp")} <strong>Orange Money</strong>
                         </p>
                         <p className="text-green-700">
-                            2. Envoyez{" "}
+                            2. {t("payment.sendAmount")}{" "}
                             <strong className="text-xl">
                                 {totalPrice.toLocaleString()} FCFA
                             </strong>
                         </p>
                         <p className="text-green-700">
-                            3. Au numéro :{" "}
+                            3. {t("payment.toNumber")}:{" "}
                             <strong className="text-lg">{ORANGE_MONEY_NUMBER}</strong>
                         </p>
                         <p className="text-green-700">
-                            4. Prenez une <strong>capture d'écran</strong> de la confirmation
+                            4. {t("payment.takeScreenshot")}
                         </p>
                     </div>
                 ) : (
                     <div className="space-y-2">
                         <p className="text-green-700">
-                            1. Cliquez sur le bouton ci-dessous pour payer via{" "}
-                            <strong>Wave</strong>
+                            1. {t("payment.clickToPay")} <strong>Wave</strong>
                         </p>
                         <Button
                             onClick={() => window.open(WAVE_LINK, "_blank")}
                             className="bg-blue-500 hover:bg-blue-600 text-white"
                         >
-                            💳 Payer avec Wave
+                            💳 {t("payment.payWith")} Wave
                         </Button>
                         <p className="text-green-700 mt-2">
-                            2. Après paiement, prenez une <strong>capture d'écran</strong>
+                            2. {t("payment.takeScreenshot")}
                         </p>
                     </div>
                 )}
             </div>
 
-            {/* Zone d'upload */}
+            {/* Upload zone */}
             <div className="space-y-3">
                 <Label htmlFor="payment-proof" className="text-lg font-semibold">
-                    📤 Envoyer votre preuve de paiement
+                    📤 {t("payment.uploadProof")}
                 </Label>
                 <p className="text-sm text-gray-600">
-                    Capture d'écran ou PDF de votre confirmation de paiement
+                    {t("payment.uploadDescription")}
                 </p>
 
                 <div className="border-2 border-dashed border-green-300 rounded-lg p-6 text-center hover:border-green-500 transition-colors">
@@ -198,10 +198,10 @@ export const PaymentProofUpload = ({
                     >
                         <Upload className="w-10 h-10 text-green-600" />
                         <span className="text-green-700 font-medium">
-                            {file ? file.name : "Cliquez pour sélectionner un fichier"}
+                            {file ? file.name : t("payment.selectFile")}
                         </span>
                         <span className="text-sm text-gray-500">
-                            Images (JPG, PNG) ou PDF - Max 5 MB
+                            {t("payment.fileTypes")}
                         </span>
                     </label>
                 </div>
@@ -221,7 +221,7 @@ export const PaymentProofUpload = ({
                 )}
             </div>
 
-            {/* Boutons d'action */}
+            {/* Action buttons */}
             <div className="flex gap-3">
                 <Button
                     onClick={handleUpload}
@@ -231,22 +231,22 @@ export const PaymentProofUpload = ({
                     {isUploading ? (
                         <>
                             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            Envoi en cours...
+                            {t("payment.uploading")}
                         </>
                     ) : (
                         <>
                             <Upload className="w-4 h-4 mr-2" />
-                            Envoyer la preuve
+                            {t("payment.sendProof")}
                         </>
                     )}
                 </Button>
                 <Button variant="outline" onClick={onClose}>
-                    Plus tard
+                    {t("payment.laterButton")}
                 </Button>
             </div>
 
             <p className="text-xs text-gray-500 text-center">
-                Vous pouvez aussi envoyer votre preuve par WhatsApp si vous préférez
+                {t("payment.whatsappNote")}
             </p>
         </div>
     );
