@@ -6,16 +6,18 @@ import { OrderSection } from "@/components/sections/OrderSection";
 import { ContactButton } from "@/components/ContactButton";
 import { ImageCarousel } from "@/components/sections/ImageCarousel";
 import { CookieConsent } from "@/components/CookieConsent";
+import { PromotionsSection } from "@/components/sections/PromotionsSection";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
       <HeroSection />
+      <PromotionsSection />
       <ImageCarousel />
       <BenefitsSection />
       <KeyBenefitsSection />
       <IngredientsSection />
-      <section className="py-16 bg-white">
+      <section id="order-section" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center gap-8">
             <OrderSection />

@@ -1,0 +1,160 @@
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { Tag, Clock, Percent } from "lucide-react";
+
+interface Promotion {
+    id: string;
+    title: string;
+    description: string | null;
+    discount_percentage: number | null;
+    promo_code: string | null;
+    image_url: string | null;
+    is_active: boolean;
+    start_date: string | null;
+    end_date: string | null;
+}
+
+export const PromotionsSection = () => {
+    const [promotions, setPromotions] = useState<Promotion[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchPromotions = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from("promotions")
+                    .select("*")
+                    .eq("is_active", true)
+                    .order("created_at", { ascending: false });
+
+                if (error) {
+                    console.error("Error fetching promotions:", error);
+                    return;
+                }
+
+                // Filtrer les promos actives (dans la période valide)
+                const now = new Date();
+                const activePromos = (data || []).filter((promo) => {
+                    if (promo.start_date && new Date(promo.start_date) > now) return false;
+                    if (promo.end_date && new Date(promo.end_date) < now) return false;
+                    return true;
+                });
+
+                setPromotions(activePromos);
+            } catch (error) {
+                console.error("Error:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPromotions();
+
+        // Écouter les changements en temps réel
+        const channel = supabase
+            .channel("promotions-changes")
+            .on(
+                "postgres_changes",
+                { event: "*", schema: "public", table: "promotions" },
+                () => {
+                    fetchPromotions();
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, []);
+
+    const scrollToOrder = () => {
+        const orderSection = document.querySelector("#order-section");
+        if (orderSection) {
+            orderSection.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
+    if (loading || promotions.length === 0) {
+        return null;
+    }
+
+    return (
+        <section className="py-8 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500">
+            <div className="container mx-auto px-4">
+                {promotions.map((promo, index) => (
+                    <motion.div
+                        key={promo.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6"
+                    >
+                        {/* Image de la promo */}
+                        {promo.image_url && (
+                            <div className="w-full md:w-1/3">
+                                <img
+                                    src={promo.image_url}
+                                    alt={promo.title}
+                                    className="rounded-xl shadow-lg w-full object-cover"
+                                />
+                            </div>
+                        )}
+
+                        {/* Contenu de la promo */}
+                        <div className="flex-1 text-center md:text-left">
+                            <div className="flex items-center justify-center md:justify-start gap-2 mb-3">
+                                <Tag className="w-6 h-6 text-orange-500" />
+                                <span className="text-orange-500 font-bold text-sm uppercase tracking-wide">
+                                    Offre Spéciale
+                                </span>
+                            </div>
+
+                            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
+                                {promo.title}
+                            </h2>
+
+                            {promo.description && (
+                                <p className="text-gray-600 mb-4">{promo.description}</p>
+                            )}
+
+                            <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mb-4">
+                                {promo.discount_percentage && (
+                                    <div className="flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full font-bold">
+                                        <Percent className="w-5 h-5" />
+                                        <span>-{promo.discount_percentage}%</span>
+                                    </div>
+                                )}
+
+                                {promo.promo_code && (
+                                    <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full font-mono font-bold">
+                                        Code: {promo.promo_code}
+                                    </div>
+                                )}
+
+                                {promo.end_date && (
+                                    <div className="flex items-center gap-2 text-red-600 text-sm">
+                                        <Clock className="w-4 h-4" />
+                                        <span>
+                                            Expire le{" "}
+                                            {new Date(promo.end_date).toLocaleDateString("fr-FR")}
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+
+                            <Button
+                                onClick={scrollToOrder}
+                                size="lg"
+                                className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold px-8 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all"
+                            >
+                                🛒 Profiter de l'offre
+                            </Button>
+                        </div>
+                    </motion.div>
+                ))}
+            </div>
+        </section>
+    );
+};

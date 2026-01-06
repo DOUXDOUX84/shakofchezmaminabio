@@ -9,10 +9,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
 import { PaymentMethodSection } from "./PaymentMethodSection";
 import { OrderSummary } from "./OrderSummary";
+import { PaymentProofUpload } from "./PaymentProofUpload";
 
 const PRICE_PER_BOX = 25800;
-const ORANGE_MONEY_NUMBER = "+221776344286";
-const WAVE_PAYMENT_LINK = "https://pay.wave.com/m/M_MO1NT4Bhh6eN/c/sn/";
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
@@ -27,7 +26,11 @@ const formSchema = z.object({
 
 export const OrderForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+  const [showPaymentProof, setShowPaymentProof] = useState(false);
+  const [currentOrderId, setCurrentOrderId] = useState<string | null>(null);
+  const [currentPaymentMethod, setCurrentPaymentMethod] = useState<"orange" | "wave">("orange");
+  const [currentTotalPrice, setCurrentTotalPrice] = useState(0);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,7 +50,7 @@ export const OrderForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setIsSubmitting(true);
-      
+
       const { data: order, error } = await supabase
         .from('orders')
         .insert([
@@ -59,6 +62,7 @@ export const OrderForm = () => {
             quantity: values.quantity,
             payment_method: values.paymentMethod,
             total_price: totalPrice,
+            status: 'pending',
           }
         ])
         .select()
@@ -75,23 +79,21 @@ export const OrderForm = () => {
       }
 
       console.log('Commande enregistrée:', order);
-      
-      const paymentInstructions = values.paymentMethod === "orange" 
-        ? `Veuillez effectuer le paiement de ${totalPrice.toLocaleString()} FCFA via Orange Money au ${ORANGE_MONEY_NUMBER}`
-        : `Veuillez effectuer le paiement de ${totalPrice.toLocaleString()} FCFA via Wave en cliquant sur le lien de paiement ou en scannant le QR code.`;
+
+      // Stocker les infos pour l'upload de preuve
+      setCurrentOrderId(order.id);
+      setCurrentPaymentMethod(values.paymentMethod);
+      setCurrentTotalPrice(totalPrice);
+
+      // Afficher le formulaire d'upload de preuve
+      setShowPaymentProof(true);
 
       toast({
-        title: "Commande enregistrée !",
-        description: paymentInstructions,
-        duration: 10000,
+        title: "✅ Commande enregistrée !",
+        description: "Veuillez maintenant effectuer le paiement et envoyer votre preuve.",
+        duration: 5000,
       });
 
-      if (values.paymentMethod === "wave") {
-        window.open(WAVE_PAYMENT_LINK, '_blank');
-      }
-
-      form.reset();
-      
     } catch (error) {
       console.error('Erreur inattendue:', error);
       toast({
@@ -103,6 +105,35 @@ export const OrderForm = () => {
       setIsSubmitting(false);
     }
   };
+
+  const handlePaymentProofSuccess = () => {
+    setShowPaymentProof(false);
+    setCurrentOrderId(null);
+    form.reset();
+  };
+
+  const handlePaymentProofClose = () => {
+    setShowPaymentProof(false);
+    form.reset();
+    toast({
+      title: "Commande en attente",
+      description: "Vous pouvez nous envoyer la preuve de paiement par WhatsApp ou repasser commande.",
+      duration: 8000,
+    });
+  };
+
+  // Afficher le formulaire d'upload de preuve si une commande est en cours
+  if (showPaymentProof && currentOrderId) {
+    return (
+      <PaymentProofUpload
+        orderId={currentOrderId}
+        paymentMethod={currentPaymentMethod}
+        totalPrice={currentTotalPrice}
+        onSuccess={handlePaymentProofSuccess}
+        onClose={handlePaymentProofClose}
+      />
+    );
+  }
 
   return (
     <Form {...form}>
@@ -170,8 +201,8 @@ export const OrderForm = () => {
             <FormItem>
               <FormLabel>Quantité</FormLabel>
               <FormControl>
-                <Input 
-                  type="number" 
+                <Input
+                  type="number"
                   min="1"
                   max="100"
                   {...field}
@@ -185,14 +216,14 @@ export const OrderForm = () => {
 
         <PaymentMethodSection form={form} />
 
-        <OrderSummary 
+        <OrderSummary
           quantity={quantity}
           pricePerBox={PRICE_PER_BOX}
           totalPrice={totalPrice}
         />
 
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           className="w-full bg-green-600 hover:bg-green-700 text-white"
           disabled={isSubmitting}
         >
