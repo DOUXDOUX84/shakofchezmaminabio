@@ -28,8 +28,8 @@ export const ContactButton = () => {
   });
   const { t } = useTranslation();
 
-  const phoneNumber = contactInfo?.phone_number || "+221 77 777 77 77"; // Fallback value
-  const whatsappLink = contactInfo?.whatsapp_link || "https://wa.me/221777777777"; // Fallback value
+  const phoneNumber = contactInfo?.phone_number || "+221 77 691 84 84"; // Fallback value
+  const whatsappLink = contactInfo?.whatsapp_link || "https://wa.me/221776918484"; // Fallback value
 
   return (
     <Dialog>
