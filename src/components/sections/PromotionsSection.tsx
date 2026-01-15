@@ -130,8 +130,8 @@ export const PromotionsSection = () => {
                                 )}
 
                                 {promo.promo_code && (
-                                    <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full font-mono font-bold">
-                                        {t("promotions.code")}: {promo.promo_code}
+                                    <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-full font-bold text-xl shadow-lg animate-pulse">
+                                        💰 {parseInt(promo.promo_code).toLocaleString('fr-FR')} FCFA
                                     </div>
                                 )}
 
@@ -151,9 +151,9 @@ export const PromotionsSection = () => {
                             <Button
                                 onClick={scrollToOrder}
                                 size="lg"
-                                className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold px-8 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all"
+                                className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold px-8 py-4 rounded-full shadow-lg transform hover:scale-105 transition-all text-lg"
                             >
-                                🛒 {t("promotions.ctaButton")}
+                                🛒 {t("promotions.ctaButton")} {promo.promo_code && `→ ${parseInt(promo.promo_code).toLocaleString('fr-FR')} FCFA`}
                             </Button>
                         </div>
                     </motion.div>

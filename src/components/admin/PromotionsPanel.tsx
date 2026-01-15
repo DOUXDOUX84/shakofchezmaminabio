@@ -46,7 +46,7 @@ export const PromotionsPanel = () => {
         title: "",
         description: "",
         discount_percentage: "",
-        promo_code: "",
+        promo_price: "",
         image_url: "",
         is_active: true,
         end_date: "",
@@ -70,7 +70,7 @@ export const PromotionsPanel = () => {
             title: "",
             description: "",
             discount_percentage: "",
-            promo_code: "",
+            promo_price: "",
             image_url: "",
             is_active: true,
             end_date: "",
@@ -84,7 +84,7 @@ export const PromotionsPanel = () => {
             title: promo.title,
             description: promo.description || "",
             discount_percentage: promo.discount_percentage?.toString() || "",
-            promo_code: promo.promo_code || "",
+            promo_price: (promo as any).promo_price?.toString() || promo.promo_code || "",
             image_url: promo.image_url || "",
             is_active: promo.is_active,
             end_date: promo.end_date ? promo.end_date.split("T")[0] : "",
@@ -100,7 +100,7 @@ export const PromotionsPanel = () => {
                 title: formData.title,
                 description: formData.description || null,
                 discount_percentage: formData.discount_percentage ? parseInt(formData.discount_percentage) : null,
-                promo_code: formData.promo_code || null,
+                promo_code: formData.promo_price || null,
                 image_url: formData.image_url || null,
                 is_active: formData.is_active,
                 end_date: formData.end_date ? new Date(formData.end_date).toISOString() : null,
@@ -235,12 +235,13 @@ export const PromotionsPanel = () => {
                                     />
                                 </div>
                                 <div>
-                                    <Label htmlFor="promo_code">Code promo</Label>
+                                    <Label htmlFor="promo_price">Prix promo (FCFA)</Label>
                                     <Input
-                                        id="promo_code"
-                                        value={formData.promo_code}
-                                        onChange={(e) => setFormData({ ...formData, promo_code: e.target.value.toUpperCase() })}
-                                        placeholder="Ex: PROMO10"
+                                        id="promo_price"
+                                        type="number"
+                                        value={formData.promo_price}
+                                        onChange={(e) => setFormData({ ...formData, promo_price: e.target.value })}
+                                        placeholder="Ex: 20000"
                                     />
                                 </div>
                             </div>
