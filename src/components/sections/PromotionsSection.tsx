@@ -75,6 +75,13 @@ export const PromotionsSection = () => {
         const orderSection = document.querySelector("#order-section");
         if (orderSection) {
             orderSection.scrollIntoView({ behavior: "smooth" });
+            // Attendre que le scroll soit terminé, puis cliquer sur le bouton du panier
+            setTimeout(() => {
+                const cartButton = orderSection.querySelector("button");
+                if (cartButton) {
+                    cartButton.click();
+                }
+            }, 500);
         }
     };
 
