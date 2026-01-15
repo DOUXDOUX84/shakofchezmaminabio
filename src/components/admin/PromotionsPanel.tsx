@@ -253,6 +253,26 @@ export const PromotionsPanel = () => {
                                     onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
                                 />
                             </div>
+                            <div>
+                                <Label htmlFor="image_url">URL de l'image (optionnel)</Label>
+                                <Input
+                                    id="image_url"
+                                    type="url"
+                                    value={formData.image_url}
+                                    onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                                    placeholder="https://exemple.com/image.jpg"
+                                />
+                                {formData.image_url && (
+                                    <div className="mt-2">
+                                        <img
+                                            src={formData.image_url}
+                                            alt="Aperçu"
+                                            className="w-full h-32 object-cover rounded-lg border"
+                                            onError={(e) => e.currentTarget.style.display = 'none'}
+                                        />
+                                    </div>
+                                )}
+                            </div>
                             <div className="flex items-center gap-2">
                                 <Switch
                                     id="is_active"
