@@ -22,6 +22,21 @@ export const OrderForm = () => {
   const [currentTotalPrice, setCurrentTotalPrice] = useState(0);
   const { t, language } = useTranslation();
 
+  // Vérifier s'il y a un prix promo dans localStorage
+  const [promoPrice, setPromoPrice] = useState<number | null>(() => {
+    const storedPromoPrice = localStorage.getItem('promoPrice');
+    if (storedPromoPrice) {
+      const price = parseInt(storedPromoPrice);
+      if (!isNaN(price) && price > 0) {
+        // Nettoyer après utilisation
+        localStorage.removeItem('promoPrice');
+        return price;
+      }
+    }
+    return null;
+  });
+  const isPromoOrder = promoPrice !== null && promoPrice > 0;
+
   // Dynamic validation messages based on language
   const formSchema = z.object({
     fullName: z.string().min(2, t("validation.nameRequired")),
@@ -48,7 +63,9 @@ export const OrderForm = () => {
 
   const quantity = form.watch("quantity");
   const paymentMethod = form.watch("paymentMethod");
-  const totalPrice = quantity * PRICE_PER_BOX;
+
+  // Si c'est une promo, utiliser le prix promo, sinon calculer normalement
+  const totalPrice = isPromoOrder && promoPrice ? promoPrice : quantity * PRICE_PER_BOX;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -226,6 +243,7 @@ export const OrderForm = () => {
           quantity={quantity}
           pricePerBox={PRICE_PER_BOX}
           totalPrice={totalPrice}
+          isPromo={isPromoOrder}
         />
 
         <Button

@@ -71,7 +71,14 @@ export const PromotionsSection = () => {
         };
     }, []);
 
-    const scrollToOrder = () => {
+    const scrollToOrder = (promoPrice?: number) => {
+        // Si c'est une promo, stocker le prix dans localStorage
+        if (promoPrice) {
+            localStorage.setItem('promoPrice', promoPrice.toString());
+        } else {
+            localStorage.removeItem('promoPrice');
+        }
+
         const orderSection = document.querySelector("#order-section");
         if (orderSection) {
             orderSection.scrollIntoView({ behavior: "smooth" });
@@ -156,7 +163,7 @@ export const PromotionsSection = () => {
                             </div>
 
                             <Button
-                                onClick={scrollToOrder}
+                                onClick={() => scrollToOrder(promo.promo_code ? parseInt(promo.promo_code) : undefined)}
                                 size="lg"
                                 className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold px-8 py-4 rounded-full shadow-lg transform hover:scale-105 transition-all text-lg"
                             >
